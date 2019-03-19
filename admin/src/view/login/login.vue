@@ -1,5 +1,5 @@
 <style lang="less">
-  @import './login.less';
+@import "./login.less";
 </style>
 
 <template>
@@ -27,7 +27,7 @@ export default {
       'handleLogin',
       'getUserInfo'
     ]),
-    handleSubmit ({ account, password }) {
+    handleSubmit({ account, password }) {
       this.handleLogin({ account, password }).then(res => {
         this.getUserInfo().then(res => {
           this.$router.push({
@@ -41,5 +41,4 @@ export default {
 </script>
 
 <style>
-
 </style>

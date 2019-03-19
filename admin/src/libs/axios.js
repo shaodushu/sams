@@ -1,8 +1,16 @@
 import axios from 'axios'
 import store from '@/store'
-import { Message } from 'iview'
+import {
+  Message
+} from 'iview'
 const addErrorLog = errorInfo => {
-  const { statusText, status, request: { responseURL } } = errorInfo
+  const {
+    statusText,
+    status,
+    request: {
+      responseURL
+    }
+  } = errorInfo
   let info = {
     type: 'ajax',
     code: status,
@@ -13,11 +21,11 @@ const addErrorLog = errorInfo => {
 }
 
 class HttpRequest {
-  constructor (baseUrl = baseURL) {
+  constructor(baseUrl = baseURL) {
     this.baseUrl = baseUrl
     this.queue = {}
   }
-  getInsideConfig () {
+  getInsideConfig() {
     const config = {
       baseURL: this.baseUrl,
       headers: {
@@ -26,13 +34,13 @@ class HttpRequest {
     }
     return config
   }
-  destroy (url) {
+  destroy(url) {
     delete this.queue[url]
     if (!Object.keys(this.queue).length) {
       // Spin.hide()
     }
   }
-  interceptors (instance, url) {
+  interceptors(instance, url) {
     // 请求拦截
     instance.interceptors.request.use(config => {
       // 添加全局的loading...
@@ -47,27 +55,41 @@ class HttpRequest {
     // 响应拦截
     instance.interceptors.response.use(res => {
       this.destroy(url)
-      const { data, status } = res
-      return { data, status }
+      const {
+        data,
+        status
+      } = res
+      return {
+        data,
+        status
+      }
     }, error => {
       this.destroy(url)
       let errorInfo = error.response
-      if (errorInfo.data.msg) {
+      if (errorInfo && errorInfo.data && errorInfo.data.msg) {
         Message.error(errorInfo.data.msg)
       }
       if (!errorInfo) {
-        const { request: { statusText, status }, config } = JSON.parse(JSON.stringify(error))
+        const {
+          request: {
+            statusText,
+            status
+          },
+          config
+        } = JSON.parse(JSON.stringify(error))
         errorInfo = {
           statusText,
           status,
-          request: { responseURL: config.url }
+          request: {
+            responseURL: config.url
+          }
         }
       }
       // addErrorLog(errorInfo)
       return Promise.reject(error)
     })
   }
-  request (options) {
+  request(options) {
     const instance = axios.create()
     options = Object.assign(this.getInsideConfig(), options)
     this.interceptors(instance, options.url)

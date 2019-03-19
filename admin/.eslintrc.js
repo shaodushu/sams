@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   'extends': [
     'plugin:vue/essential',
-    '@vue/standard'
+    // '@vue/standard'
   ],
   rules: {
     // allow async-await
@@ -13,7 +13,9 @@ module.exports = {
       'x-invalid-end-tag': false
     }],
     'no-undef': 'off',
-    'camelcase': 'off'
+    'camelcase': 'off',
+    // 关闭函数括号前的空格验证
+    'space-before-function-paren': 0
   },
   parserOptions: {
     parser: 'babel-eslint'

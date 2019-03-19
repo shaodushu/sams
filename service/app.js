@@ -5,10 +5,14 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-const indexRouter =require('./routes/index');
-const usersRouter =require('./routes/users');
-const loginRouter =require('./routes/login');
-
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
+const loginRouter = require('./routes/login');
+const apartmentRouter = require('./routes/apartment');
+const imageRouter = require('./routes/image')
+const adminRouter = require('./routes/admin')
+const studentRouter = require('./routes/student')
+const waterRouter = require('./routes/water')
 const app = express();
 
 /**
@@ -38,7 +42,12 @@ let Test = [
 
 let Admin = [
   loginRouter,
-  usersRouter
+  userRouter,
+  apartmentRouter,
+  imageRouter,
+  adminRouter,
+  studentRouter.routerAdmin,
+  waterRouter.routerAdmin
 ]
 
 app.use('/test', [...Test]);
