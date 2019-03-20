@@ -90,7 +90,7 @@ export default [{
         title: '宿管管理'
       },
       component: () => import('@/view/admin/index.vue')
-    },{
+    }, {
       path: 'create',
       name: '宿管创建',
       meta: {
@@ -117,6 +117,15 @@ export default [{
         title: '学生管理'
       },
       component: () => import('@/view/student/index.vue')
+    }, {
+      path: 'create',
+      name: '学生创建',
+      meta: {
+        icon: 'md-people',
+        title: '学生创建',
+        hideInMenu: true
+      },
+      component: () => import('@/view/student/create.vue')
     }]
   },
   {
@@ -179,10 +188,20 @@ export default [{
           title: '维修人员'
         },
         component: () => import('@/view/maintain/staff.vue')
+      },
+      {
+        path: 'createStaff',
+        name: '维修人员创建',
+        meta: {
+          icon: 'md-person',
+          title: '维修人员创建',
+          hideInMenu: true
+        },
+        component: () => import('@/view/maintain/createStaff.vue')
       }
     ]
   },
-  
+
   {
     path: '/message',
     name: 'message',

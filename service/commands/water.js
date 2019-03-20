@@ -11,7 +11,7 @@ const batchCreate = (length) => {
     return `INSERT INTO water (aid,dnum,consume,date,createDate) VALUES ${values}`
 }
 const total = (name) => `SELECT COUNT(*) FROM water LEFT JOIN apartment ON apartment.id=water.aid WHERE name LIKE "${name}%"`
-const list = (name) => `SELECT apartment.name,water.aid,water.dnum,water.consume,water.date,water.createDate FROM water LEFT JOIN apartment ON apartment.id=water.aid where name LIKE "${name}%" limit ?,?`
+const list = (name) => `SELECT apartment.name,water.* FROM water LEFT JOIN apartment ON apartment.id=water.aid where name LIKE "${name}%" limit ?,?`
 
 module.exports = {
     create,

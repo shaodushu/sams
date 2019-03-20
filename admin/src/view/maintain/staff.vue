@@ -4,8 +4,8 @@
       <Col span="17">
         <Card>
           <Table
-            :data="goodsData"
-            :columns="goodsColumns"
+            :data="repairData"
+            :columns="repairColumns"
             stripe
             ref="tabel"
             :loading="tabelLoading"
@@ -33,11 +33,13 @@
             <span>操作</span>
           </p>
           <div class="margin-bottom-10">
-            <span>公寓名：</span>
-            <Input icon="pizza" placeholder="输入公寓名" v-model="pageData.name"/>
+            <span>维修人员名：</span>
+            <Input icon="pizza" placeholder="输入维修人员名" v-model="pageData.name"/>
           </div>
           <Divider dashed></Divider>
-          <Button type="primary" @click="query">查询</Button>
+          <Button type="info" @click="query">查询</Button>
+          <Divider type="vertical"/>
+          <Button type="warning" @click="handleCreate">创建</Button>
         </Card>
       </Col>
     </Row>
@@ -45,9 +47,9 @@
 </template>
 
 <script>
-import Util from "@/libs/util";
+import * as repair_api from "@/api/repair";
 export default {
-  name: 'maintain_staff',
+  name: 'repair',
   data() {
     return {
       total: 0,
@@ -57,96 +59,59 @@ export default {
         name: null
       },
       tabelLoading: true,
-      goodsData: [],
-      goodsColumns: [
+      repairData: [],
+      repairColumns: [
         {
           type: "index",
           width: 60,
-          fixed: "left",
           align: "center"
         },
         {
-          title: "公寓名称",
-          width: 120,
+          title: "名称",
           align: "center",
+          width: 100,
           key: "name"
         },
         {
-          title: "公寓类型",
-          width: 120,
+          title: "类型",
           align: "center",
-          key: "type"
+          width: 130,
+          render: (h, params) => {
+            return h('Tag', {
+              props: {
+                type: 'dot',
+                color: params.row.status === '0' ? 'warning' : 'success'
+              }
+            }, params.row.status === '0' ? '休息中' : '工作中')
+          }
         },
         {
-          title: "品牌",
-          width: 120,
-          align: "center",
-          key: "brand"
-        },
-        {
-          title: "库存",
-          width: 120,
-          align: "center",
-          key: "inventory"
-        },
-        {
-          title: "操作",
-          fixed: "right",
-          width: 150,
+          title: "头像",
+          width: 70,
           align: "center",
           render: (h, params) => {
-            let color, text;
-            switch (params.row.status) {
-              case 0:
-                color = "success";
-                text = "上架";
-                break;
-              case 1:
-                color = "warning";
-                text = "下架";
-                break;
-            }
-            return h("div", [
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary",
-                    size: "small"
-                  },
-                  style: {
-                    marginRight: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      this.$router.push({
-                        name: "goods_edit",
-                        params: {
-                          goodsId: params.row.id
-                        }
-                      });
-                    }
-                  }
-                },
-                "编辑"
-              ),
-              h(
-                "Button",
-                {
-                  props: {
-                    type: color,
-                    loading: params.row.loading,
-                    size: "small"
-                  },
-                  on: {
-                    click: () => {
-                    }
-                  }
-                },
-                text
-              )
-            ]);
+            return h('Avatar', {
+              props: {
+                size: 'large',
+                src: params.row.avatar
+              }
+            })
           }
+        },
+        {
+          title: "联系方式",
+          align: "center",
+          key: "tel"
+        },
+        {
+          title: "创建时间",
+          align: "center",
+          key: "createDate"
+        },
+        {
+          title: "更新时间",
+          align: "center",
+          key: "updateDate"
         }
       ]
     };
@@ -154,22 +119,34 @@ export default {
   methods: {
     getPage(page) {
       this.pageData.page = page;
-      this.getGoods();
+      this.getRepair();
     },
     getPageSize(size) {
       this.pageData.size = size;
-      this.getGoods();
+      this.getRepair();
     },
     query() {
       this.pageData.page = 1;
-      this.getGoods();
+      this.getRepair();
     },
-    getGoods() {
-      this.tabelLoading = false
+    async getRepair() {
+      try {
+        this.tabelLoading = true
+        const result = await repair_api.list(this.pageData)
+        this.repairData = result.data.list
+        this.total = result.data.total
+        this.tabelLoading = false
+        this.$Message.info(result.data.msg)
+      } catch (error) {
+        this.tabelLoading = false
+      }
+    },
+    handleCreate() {
+      this.$router.push({ path: '/maintain/createStaff' })
     }
   },
   mounted() {
-    this.getGoods();
+    this.getRepair();
   }
 };
 </script>

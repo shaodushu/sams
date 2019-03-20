@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { list } from "@/api/admin";
+import * as admin_api from "@/api/admin";
 export default {
   name: 'admin',
   data() {
@@ -122,7 +122,7 @@ export default {
     async getAdmin() {
       try {
         this.tabelLoading = true
-        const result = await list(this.pageData)
+        const result = await admin_api.list(this.pageData)
         this.adminData = result.data.list
         this.total = result.data.total
         this.tabelLoading = false

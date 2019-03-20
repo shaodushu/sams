@@ -6,9 +6,10 @@ const commands = require('../commands')
 const create = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params);
-        param.createDate = new Date()
-        param.access = 1;
-        const result = await operation.asyncHandleDbArgs(commands.admin.create(Object.keys(param)), [Object.values(param)])
+        let time = new Date()
+        param.createDate = time
+        param.updateDate = time
+        const result = await operation.asyncHandleDbArgs(commands.repair.create(Object.keys(param)), [Object.values(param)])
         if (result.affectedRows === 1) {
             res.send(200, {
                 msg: '创建成功'
@@ -25,8 +26,8 @@ const create = async (req, res, next) => {
 const list = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params);
-        let total = await operation.asyncHandleDb(commands.admin.total(param.name || ''))
-        let list = await operation.asyncHandleDbArgs(commands.admin.list(param.name || ''), [(param.page - 1) * param.size, param.page * param.size])
+        let total = await operation.asyncHandleDb(commands.repair.total(param.name || ''))
+        let list = await operation.asyncHandleDbArgs(commands.repair.list(param.name || ''), [(param.page - 1) * param.size, param.page * param.size])
         res.send(200, {
             list,
             total: total[0]['COUNT(id)'],

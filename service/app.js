@@ -14,6 +14,7 @@ const adminRouter = require('./routes/admin')
 const studentRouter = require('./routes/student')
 const waterRouter = require('./routes/water')
 const electricityRouter = require('./routes/electricity')
+const repairRouter = require('./routes/repair')
 
 const app = express();
 
@@ -50,7 +51,8 @@ let Admin = [
   adminRouter,
   studentRouter.routerAdmin,
   waterRouter.routerAdmin,
-  electricityRouter.routerAdmin
+  electricityRouter.routerAdmin,
+  repairRouter.routerAdmin
 ]
 
 app.use('/test', [...Test]);

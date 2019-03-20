@@ -4,8 +4,8 @@
       <Col span="17">
         <Card>
           <Table
-            :data="goodsData"
-            :columns="goodsColumns"
+            :data="studentData"
+            :columns="studentColumns"
             stripe
             ref="tabel"
             :loading="tabelLoading"
@@ -33,11 +33,13 @@
             <span>操作</span>
           </p>
           <div class="margin-bottom-10">
-            <span>公寓名：</span>
-            <Input icon="pizza" placeholder="输入公寓名" v-model="pageData.name"/>
+            <span>学生名：</span>
+            <Input icon="pizza" placeholder="输入学生名" v-model="pageData.name"/>
           </div>
           <Divider dashed></Divider>
           <Button type="primary" @click="query">查询</Button>
+          <Divider type="vertical"/>
+          <Button type="warning" @click="handleCreate">创建</Button>
         </Card>
       </Col>
     </Row>
@@ -45,7 +47,7 @@
 </template>
 
 <script>
-import Util from "@/libs/util";
+import * as student_api from "@/api/student";
 export default {
   name: 'student',
   data() {
@@ -57,96 +59,80 @@ export default {
         name: null
       },
       tabelLoading: true,
-      goodsData: [],
-      goodsColumns: [
+      studentData: [],
+      studentColumns: [
         {
           type: "index",
           width: 60,
-          fixed: "left",
+          fixed: 'left',
           align: "center"
         },
         {
-          title: "公寓名称",
-          width: 120,
+          title: "名称",
           align: "center",
+          width: 100,
           key: "name"
         },
         {
-          title: "公寓类型",
-          width: 120,
-          align: "center",
-          key: "type"
-        },
-        {
-          title: "品牌",
-          width: 120,
-          align: "center",
-          key: "brand"
-        },
-        {
-          title: "库存",
-          width: 120,
-          align: "center",
-          key: "inventory"
-        },
-        {
-          title: "操作",
-          fixed: "right",
-          width: 150,
+          title: "头像",
+          width: 70,
           align: "center",
           render: (h, params) => {
-            let color, text;
-            switch (params.row.status) {
-              case 0:
-                color = "success";
-                text = "上架";
-                break;
-              case 1:
-                color = "warning";
-                text = "下架";
-                break;
-            }
-            return h("div", [
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary",
-                    size: "small"
-                  },
-                  style: {
-                    marginRight: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      this.$router.push({
-                        name: "goods_edit",
-                        params: {
-                          goodsId: params.row.id
-                        }
-                      });
-                    }
-                  }
-                },
-                "编辑"
-              ),
-              h(
-                "Button",
-                {
-                  props: {
-                    type: color,
-                    loading: params.row.loading,
-                    size: "small"
-                  },
-                  on: {
-                    click: () => {
-                    }
-                  }
-                },
-                text
-              )
-            ]);
+            return h('Avatar', {
+              props: {
+                size: 'large',
+                src: params.row.avatar
+              }
+            })
           }
+        },
+        {
+          title: "公寓名称",
+          align: "center",
+          width: 100,
+          key: "aname"
+        },
+        {
+          title: "宿舍号",
+          align: "center",
+          width: 100,
+          key: "dnum"
+        },
+        {
+          title: "学院",
+          align: "center",
+          width: 100,
+          key: "college"
+        },
+        {
+          title: "班级",
+          align: "center",
+          width: 100,
+          key: "class"
+        },
+        {
+          title: "学号",
+          align: "center",
+          width: 100,
+          key: "snum"
+        },
+        {
+          title: "联系方式",
+          align: "center",
+          width: 115,
+          key: "tel"
+        },
+        {
+          title: "创建时间",
+          align: "center",
+          width: 120,
+          key: "createDate"
+        },
+        {
+          title: "更新时间",
+          align: "center",
+          width: 120,
+          key: "updateDate"
         }
       ]
     };
@@ -154,22 +140,34 @@ export default {
   methods: {
     getPage(page) {
       this.pageData.page = page;
-      this.getGoods();
+      this.getStudent();
     },
     getPageSize(size) {
       this.pageData.size = size;
-      this.getGoods();
+      this.getStudent();
     },
     query() {
       this.pageData.page = 1;
-      this.getGoods();
+      this.getStudent();
     },
-    getGoods() {
-      this.tabelLoading = false
+    async getStudent() {
+      try {
+        this.tabelLoading = true
+        const result = await student_api.list(this.pageData)
+        this.studentData = result.data.list
+        this.total = result.data.total
+        this.tabelLoading = false
+        this.$Message.info(result.data.msg)
+      } catch (error) {
+        this.tabelLoading = false
+      }
+    },
+    handleCreate() {
+      this.$router.push({ path: '/student/create' })
     }
   },
   mounted() {
-    this.getGoods();
+    this.getStudent();
   }
 };
 </script>

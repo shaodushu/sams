@@ -26,10 +26,10 @@
   </Card>
 </template>
 <script>
-import * as admin_api from '@/api/admin';
+import * as repair_api from '@/api/repair';
 import PicList from '@/components/pic-list'
 export default {
-  name: 'admin_create',
+  name: 'repair_create',
   data() {
     return {
       actionUrl: "http://localhost:3000/admin/file/uploadImg",
@@ -40,7 +40,7 @@ export default {
         tel: ''
       },
       extraData: {
-        type: 'admin'
+        type: 'repair'
       }
     }
   },
@@ -50,7 +50,7 @@ export default {
   methods: {
     async handleClick() {
       try {
-        const result = await admin_api.create(this.formItem)
+        const result = await repair_api.create(this.formItem)
         this.$Message.info(result.data.msg)
       } catch (error) {
         console.log(error)

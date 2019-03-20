@@ -6,8 +6,9 @@ const commands = require('../commands')
 const create = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params);
-        param.createDate = new Date()
-        param.access = 1;
+        let time = new Date()
+        param.createDate = time
+        param.updateDate = time
         const result = await operation.asyncHandleDbArgs(commands.student.create(Object.keys(param)), [Object.values(param)])
         if (result.affectedRows === 1) {
             res.send(200, {
