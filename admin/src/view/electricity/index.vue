@@ -1,11 +1,12 @@
+
 <template>
   <div>
     <Row>
       <Col span="17">
         <Card>
           <Table
-            :data="goodsData"
-            :columns="goodsColumns"
+            :data="electricityData"
+            :columns="electricityColumns"
             stripe
             ref="tabel"
             :loading="tabelLoading"
@@ -38,14 +39,49 @@
           </div>
           <Divider dashed></Divider>
           <Button type="primary" @click="query">查询</Button>
+          <Divider type="vertical"/>
+          <Button type="warning" @click="handleOpenModal">导入</Button>
         </Card>
       </Col>
     </Row>
+    <Modal
+      v-model="modal"
+      :loading="importLoading"
+      draggable
+      scrollable
+      :closable="false"
+      ok-text="导入"
+      @on-ok="handleImport"
+      title="用水数据导入"
+    >
+      <Form :model="formItem" :label-width="80" ref="downloadForm">
+        <FormItem label="公寓名称">
+          <SelectBox
+            ref="selectBox"
+            placeholder="导入的公寓名称..."
+            :list="apartmentList"
+            @on-clear="handleClear"
+            @on-change="handleChange"
+          />
+        </FormItem>
+        <FormItem label="导入文件">
+          <Upload :before-upload="handleUpload" action>
+            <Button icon="ios-cloud-upload-outline">
+              <span v-if="formItem.file===null">选择导入文件</span>
+              <span v-else>{{ formItem.file.name }}</span>
+            </Button>
+          </Upload>
+        </FormItem>
+      </Form>
+    </Modal>
   </div>
 </template>
 
 <script>
-import Util from "@/libs/util";
+import SelectBox from '@/components/select-box'
+import * as apartment_api from "@/api/apartment"
+import * as electricity_api from "@/api/electricity"
+import * as file_api from "@/api/file"
 export default {
   name: 'electricity',
   data() {
@@ -56,120 +92,117 @@ export default {
         size: 10,
         name: null
       },
+      formItem: {
+        aid: '',
+        file: null
+      },
       tabelLoading: true,
-      goodsData: [],
-      goodsColumns: [
+      importLoading: true,
+      modal: false,//用水导入面板
+      apartmentList: [],
+      electricityData: [],
+      electricityColumns: [
         {
           type: "index",
           width: 60,
-          fixed: "left",
           align: "center"
         },
         {
           title: "公寓名称",
-          width: 120,
           align: "center",
           key: "name"
         },
         {
-          title: "公寓类型",
-          width: 120,
+          title: "宿舍号",
           align: "center",
-          key: "type"
+          key: "dnum"
         },
         {
-          title: "品牌",
-          width: 120,
+          title: "用电",
           align: "center",
-          key: "brand"
+          key: "consume"
         },
         {
-          title: "库存",
+          title: "日期",
           width: 120,
           align: "center",
-          key: "inventory"
+          key: "date"
         },
         {
-          title: "操作",
-          fixed: "right",
-          width: 150,
+          title: "创建时间",
+          width: 120,
           align: "center",
-          render: (h, params) => {
-            let color, text;
-            switch (params.row.status) {
-              case 0:
-                color = "success";
-                text = "上架";
-                break;
-              case 1:
-                color = "warning";
-                text = "下架";
-                break;
-            }
-            return h("div", [
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary",
-                    size: "small"
-                  },
-                  style: {
-                    marginRight: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      this.$router.push({
-                        name: "goods_edit",
-                        params: {
-                          goodsId: params.row.id
-                        }
-                      });
-                    }
-                  }
-                },
-                "编辑"
-              ),
-              h(
-                "Button",
-                {
-                  props: {
-                    type: color,
-                    loading: params.row.loading,
-                    size: "small"
-                  },
-                  on: {
-                    click: () => {
-                    }
-                  }
-                },
-                text
-              )
-            ]);
-          }
+          key: "createDate"
         }
       ]
     };
   },
+  components: {
+    SelectBox
+  },
   methods: {
     getPage(page) {
       this.pageData.page = page;
-      this.getGoods();
+      this.getElectricity();
     },
     getPageSize(size) {
       this.pageData.size = size;
-      this.getGoods();
+      this.getElectricity();
     },
     query() {
       this.pageData.page = 1;
-      this.getGoods();
+      this.getElectricity();
     },
-    getGoods() {
-      this.tabelLoading = false
+    async getElectricity() {
+      try {
+        this.tabelLoading = true
+        const result = await electricity_api.list(this.pageData)
+        this.electricityData = result.data.list
+        this.total = result.data.total
+        this.tabelLoading = false
+        this.$Message.info(result.data.msg)
+      } catch (error) {
+        this.tabelLoading = false
+      }
+    },
+    async handleOpenModal() {
+      this.modal = true
+      try {
+        const { list } = (await apartment_api.list({
+          page: 1,
+          size: 100
+        })).data
+        this.apartmentList = list
+      } catch (error) {
+
+      }
+    },
+    async handleImport() {
+      this.importLoading = true
+      let formData = new FormData()
+      formData.append('file', this.formItem.file)
+      formData.append('aid', this.formItem.aid)
+      try {
+        const list = await file_api.importElectricity(formData)
+        this.importLoading = false
+        this.getElectricity();
+      } catch (error) {
+        this.importLoading = false
+      }
+    },
+    handleChange(value) {
+      this.formItem.aid = value
+    },
+    handleClear(value) {
+      this.formItem.aid = value
+    },
+    handleUpload(file) {
+      this.formItem.file = file;
+      return false;
     }
   },
   mounted() {
-    this.getGoods();
+    this.getElectricity();
   }
 };
 </script>

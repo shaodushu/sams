@@ -81,6 +81,7 @@
 import SelectBox from '@/components/select-box'
 import * as apartment_api from "@/api/apartment"
 import * as water_api from "@/api/water"
+import * as file_api from "@/api/file"
 export default {
   name: 'water',
   data() {
@@ -104,91 +105,34 @@ export default {
         {
           type: "index",
           width: 60,
-          fixed: "left",
           align: "center"
         },
         {
           title: "公寓名称",
-          width: 120,
           align: "center",
           key: "name"
         },
         {
-          title: "公寓类型",
-          width: 120,
+          title: "宿舍号",
           align: "center",
-          key: "type"
+          key: "dnum"
         },
         {
-          title: "品牌",
-          width: 120,
+          title: "用水",
           align: "center",
-          key: "brand"
+          key: "consume"
         },
         {
-          title: "库存",
+          title: "日期",
           width: 120,
           align: "center",
-          key: "inventory"
+          key: "date"
         },
         {
-          title: "操作",
-          fixed: "right",
-          width: 150,
+          title: "创建时间",
+          width: 120,
           align: "center",
-          render: (h, params) => {
-            let color, text;
-            switch (params.row.status) {
-              case 0:
-                color = "success";
-                text = "上架";
-                break;
-              case 1:
-                color = "warning";
-                text = "下架";
-                break;
-            }
-            return h("div", [
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary",
-                    size: "small"
-                  },
-                  style: {
-                    marginRight: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      this.$router.push({
-                        name: "water_edit",
-                        params: {
-                          waterId: params.row.id
-                        }
-                      });
-                    }
-                  }
-                },
-                "编辑"
-              ),
-              h(
-                "Button",
-                {
-                  props: {
-                    type: color,
-                    loading: params.row.loading,
-                    size: "small"
-                  },
-                  on: {
-                    click: () => {
-                    }
-                  }
-                },
-                text
-              )
-            ]);
-          }
+          key: "createDate"
         }
       ]
     };
@@ -209,8 +153,17 @@ export default {
       this.pageData.page = 1;
       this.getWater();
     },
-    getWater() {
-      this.tabelLoading = false
+    async getWater() {
+      try {
+        this.tabelLoading = true
+        const result = await water_api.list(this.pageData)
+        this.waterData = result.data.list
+        this.total = result.data.total
+        this.tabelLoading = false
+        this.$Message.info(result.data.msg)
+      } catch (error) {
+        this.tabelLoading = false
+      }
     },
     async handleOpenModal() {
       this.modal = true
@@ -230,8 +183,9 @@ export default {
       formData.append('file', this.formItem.file)
       formData.append('aid', this.formItem.aid)
       try {
-        const list = await water_api.importWater(formData)
+        const list = await file_api.importWater(formData)
         this.importLoading = false
+        this.getWater();
       } catch (error) {
         this.importLoading = false
       }

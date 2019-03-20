@@ -3,13 +3,13 @@ const operation = require('../libs/operation')
 const tools = require('../libs/tool')
 const commands = require('../commands')
 
-const create = async (req, res, next) => {
+const batchCreate = async (req, res, next, extra = {}) => {
     try {
-        let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params);
-        param.createDate = new Date()
-        param.access = 1;
-        const result = await operation.asyncHandleDbArgs(commands.admin.create(Object.keys(param)), [Object.values(param)])
-        if (result.affectedRows === 1) {
+        const {
+            list
+        } = extra
+        const result = await operation.asyncHandleDbArgs(commands.electricity.batchCreate(list.length), list)
+        if (result.affectedRows >= 1) {
             res.send(200, {
                 msg: '创建成功'
             })
@@ -22,14 +22,15 @@ const create = async (req, res, next) => {
         next(createError(err))
     }
 }
+
 const list = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params);
-        let total = await operation.asyncHandleDb(commands.admin.total(param.name || ''))
-        let list = await operation.asyncHandleDbArgs(commands.admin.list(param.name || ''), [(param.page - 1) * param.size, param.page * param.size])
+        let total = await operation.asyncHandleDb(commands.electricity.total(param.name || ''))
+        let list = await operation.asyncHandleDbArgs(commands.electricity.list(param.name || ''), [(param.page - 1) * param.size, param.page * param.size])
         res.send(200, {
             list,
-            total: total[0]['COUNT(id)'],
+            total: total[0]['COUNT(*)'],
             msg: '查询成功'
         })
     } catch (err) {
@@ -37,6 +38,6 @@ const list = async (req, res, next) => {
     }
 }
 module.exports = {
-    create,
+    batchCreate,
     list
 }

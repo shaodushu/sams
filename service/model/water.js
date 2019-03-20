@@ -1,27 +1,36 @@
 const createError = require('http-errors')
 const operation = require('../libs/operation')
-const formidable = require('formidable');
 const tools = require('../libs/tool')
 const commands = require('../commands')
 
-const importWater = async (req, res, next) => {
+const batchCreate = async (req, res, next, extra = {}) => {
     try {
-        const form = new formidable.IncomingForm();
-        form.parse(req, (err, fields, files) => {
-            console.log(err, fields.aid, files)
-        })
+        const {
+            list
+        } = extra
+        const result = await operation.asyncHandleDbArgs(commands.water.batchCreate(list.length), list)
+        if (result.affectedRows >= 1) {
+            res.send(200, {
+                msg: '创建成功'
+            })
+        } else {
+            res.send(500, {
+                msg: '创建失败'
+            })
+        }
     } catch (err) {
         next(createError(err))
     }
 }
+
 const list = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params);
-        let total = await operation.asyncHandleDb(commands.admin.total(param.name || ''))
-        let list = await operation.asyncHandleDbArgs(commands.admin.list(param.name || ''), [(param.page - 1) * param.size, param.page * param.size])
+        let total = await operation.asyncHandleDb(commands.water.total(param.name || ''))
+        let list = await operation.asyncHandleDbArgs(commands.water.list(param.name || ''), [(param.page - 1) * param.size, param.page * param.size])
         res.send(200, {
             list,
-            total: total[0]['COUNT(id)'],
+            total: total[0]['COUNT(*)'],
             msg: '查询成功'
         })
     } catch (err) {
@@ -29,6 +38,6 @@ const list = async (req, res, next) => {
     }
 }
 module.exports = {
-    importWater,
+    batchCreate,
     list
 }

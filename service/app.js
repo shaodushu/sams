@@ -9,10 +9,12 @@ const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
 const loginRouter = require('./routes/login');
 const apartmentRouter = require('./routes/apartment');
-const imageRouter = require('./routes/image')
+const filesRouter = require('./routes/files')
 const adminRouter = require('./routes/admin')
 const studentRouter = require('./routes/student')
 const waterRouter = require('./routes/water')
+const electricityRouter = require('./routes/electricity')
+
 const app = express();
 
 /**
@@ -44,10 +46,11 @@ let Admin = [
   loginRouter,
   userRouter,
   apartmentRouter,
-  imageRouter,
+  filesRouter,
   adminRouter,
   studentRouter.routerAdmin,
-  waterRouter.routerAdmin
+  waterRouter.routerAdmin,
+  electricityRouter.routerAdmin
 ]
 
 app.use('/test', [...Test]);

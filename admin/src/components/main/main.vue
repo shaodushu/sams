@@ -1,11 +1,29 @@
 <template>
   <Layout style="height: 100%" class="main">
-    <Sider hide-trigger collapsible :width="256" :collapsed-width="64" v-model="collapsed" class="left-sider" :style="{overflow: 'hidden'}">
-      <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
+    <Sider
+      hide-trigger
+      collapsible
+      :width="256"
+      :collapsed-width="64"
+      v-model="collapsed"
+      class="left-sider"
+      :style="{overflow: 'hidden'}"
+    >
+      <side-menu
+        accordion
+        ref="sideMenu"
+        :active-name="$route.name"
+        :collapsed="collapsed"
+        @on-select="turnToPage"
+        :menu-list="menuList"
+      >
         <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
         <div class="logo-con">
-          <div v-show="!collapsed" style="background: linear-gradient(45deg, #0081ff, #1cbbb4);font-size: 20px;text-align: center;color: #fff;border-radius: 4px;padding: 5px;">成信大•宿管</div>
-          <img v-show="collapsed" :src="minLogo" key="min-logo" />
+          <div
+            v-show="!collapsed"
+            style="background: linear-gradient(45deg, #0081ff, #1cbbb4);font-size: 20px;text-align: center;color: #fff;border-radius: 4px;padding: 5px;"
+          >宿舍管理</div>
+          <img v-show="collapsed" :src="minLogo" key="min-logo">
         </div>
       </side-menu>
     </Sider>
@@ -14,14 +32,23 @@
         <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
           <user :message-unread-count="unreadCount" :user-avatar="userAvatar"/>
           <!-- <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/> -->
-          <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount"></error-store>
+          <error-store
+            v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader"
+            :has-read="hasReadErrorPage"
+            :count="errorCount"
+          ></error-store>
           <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
         </header-bar>
       </Header>
       <Content class="main-content-con">
         <Layout class="main-layout-con">
           <div class="tag-nav-wrapper">
-            <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
+            <tags-nav
+              :value="$route"
+              @input="handleClick"
+              :list="tagNavList"
+              @on-close="handleCloseTag"
+            />
           </div>
           <Content class="content-wrapper">
             <keep-alive :include="cacheList">
@@ -61,7 +88,7 @@ export default {
     User,
     ABackTop
   },
-  data () {
+  data() {
     return {
       collapsed: false,
       minLogo,
@@ -73,29 +100,29 @@ export default {
     ...mapGetters([
       'errorCount'
     ]),
-    tagNavList () {
+    tagNavList() {
       return this.$store.state.app.tagNavList
     },
-    tagRouter () {
+    tagRouter() {
       return this.$store.state.app.tagRouter
     },
-    userAvatar () {
+    userAvatar() {
       return this.$store.state.user.avatarImgPath
     },
-    cacheList () {
+    cacheList() {
       const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
       return list
     },
-    menuList () {
+    menuList() {
       return this.$store.getters.menuList
     },
-    local () {
+    local() {
       return this.$store.state.app.local
     },
-    hasReadErrorPage () {
+    hasReadErrorPage() {
       return this.$store.state.app.hasReadErrorPage
     },
-    unreadCount () {
+    unreadCount() {
       return this.$store.state.user.unreadCount
     }
   },
@@ -112,7 +139,7 @@ export default {
       'handleLogin',
       'getUnreadMessageCount'
     ]),
-    turnToPage (route) {
+    turnToPage(route) {
       let { name, params, query } = {}
       if (typeof route === 'string') name = route
       else {
@@ -130,10 +157,10 @@ export default {
         query
       })
     },
-    handleCollapsedChange (state) {
+    handleCollapsedChange(state) {
       this.collapsed = state
     },
-    handleCloseTag (res, type, route) {
+    handleCloseTag(res, type, route) {
       if (type !== 'others') {
         if (type === 'all') {
           this.turnToPage(this.$config.homeName)
@@ -145,12 +172,12 @@ export default {
       }
       this.setTagNavList(res)
     },
-    handleClick (item) {
+    handleClick(item) {
       this.turnToPage(item)
     }
   },
   watch: {
-    '$route' (newRoute) {
+    '$route'(newRoute) {
       const { name, query, params, meta } = newRoute
       this.addTag({
         route: { name, query, params, meta },
@@ -161,7 +188,7 @@ export default {
       this.$refs.sideMenu.updateOpenName(newRoute.name)
     }
   },
-  mounted () {
+  mounted() {
     /**
      * @description 初始化设置面包屑导航和标签导航
      */

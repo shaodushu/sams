@@ -32,7 +32,7 @@ export default {
   name: 'admin_create',
   data() {
     return {
-      actionUrl: "http://localhost:3000/admin/uploadImg",
+      actionUrl: "http://localhost:3000/admin/file/uploadImg",
       defaultList: [],
       formItem: {
         name: '',

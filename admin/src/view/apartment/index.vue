@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { list } from "@/api/apartment";
+import * as apartment_api from "@/api/apartment";
 export default {
   name: 'apartment',
   data() {
@@ -121,9 +121,9 @@ export default {
     async getApartment() {
       try {
         this.tabelLoading = true
-        const result = await list(this.pageData)
+        const result = await apartment_api.list(this.pageData)
         this.apartmentData = result.data.list
-        this.total=result.data.total
+        this.total = result.data.total
         this.tabelLoading = false
         this.$Message.info(result.data.msg)
       } catch (error) {
