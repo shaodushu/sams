@@ -28,6 +28,7 @@ const corsOptions = {
 }
 
 // view engine setup
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -45,7 +46,7 @@ let Test = [
 
 let Admin = [
   loginRouter,
-  userRouter,
+  userRouter.routerAdmin,
   apartmentRouter,
   filesRouter,
   adminRouter,
@@ -54,9 +55,12 @@ let Admin = [
   electricityRouter.routerAdmin,
   repairRouter.routerAdmin
 ]
-
+let Custom = [
+  userRouter.routerCustom
+]
 app.use('/test', [...Test]);
 app.use('/admin', [...Admin]);
+app.use('/custom', [...Custom]);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

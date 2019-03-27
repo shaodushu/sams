@@ -1,6 +1,6 @@
 const mysql = require('mysql')
-const db = require('../config/db')
-const pool = mysql.createPool(db);
+const config = require('../config')
+const pool = mysql.createPool(config.mysql);
 
 /**
  * 对query执行的结果自定义返回JSON结果

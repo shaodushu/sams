@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "custom",
   "description": "宿舍管理小程序",
-  "appid": "touristappid",
+  "appid": "wxde57f96494c9231d",
   "setting": {
     "urlCheck": true,
     "es6": false,

@@ -1,0 +1,155 @@
+.launch {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  
+    &-loading {
+      background: #ffd544;
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      padding-top: 40px;
+      overflow: hidden;
+      position: relative;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+      font-weight: 300;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  
+      .sk-cube-grid {
+        width: 120px;
+        height: 120px;
+        margin: 100px auto;
+  
+        .sk-cube {
+          width: 33%;
+          height: 33%;
+          background-color: #fff;
+          float: left;
+          -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+          animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+  
+          &.sk-cube1 {
+            -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s;
+          }
+  
+          &.sk-cube2 {
+            -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s;
+          }
+  
+          &.sk-cube3 {
+            -webkit-animation-delay: 0.4s;
+            animation-delay: 0.4s;
+          }
+  
+          &.sk-cube4 {
+            -webkit-animation-delay: 0.1s;
+            animation-delay: 0.1s;
+          }
+  
+          &.sk-cube5 {
+            -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s;
+          }
+  
+          &.sk-cube6 {
+            -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s;
+          }
+  
+          &.sk-cube7 {
+            -webkit-animation-delay: 0s;
+            animation-delay: 0s;
+          }
+  
+          &.sk-cube8 {
+            -webkit-animation-delay: 0.1s;
+            animation-delay: 0.1s;
+          }
+  
+          &.sk-cube9 {
+            -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s;
+          }
+        }
+      }
+  
+  
+  
+      &_text {
+        color: #282148;
+        font-size: 26px;
+        font-weight: bold;
+  
+      }
+  
+      &_wave {
+        position: absolute;
+        width: 100%;
+        bottom: -1PX;
+        left: 0;
+        z-index: 99;
+        mix-blend-mode: screen;
+        height: 100px;
+  
+      }
+    }
+  
+    &-desc {
+      position: relative;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding-top: 40px;
+      overflow: hidden;
+      flex-direction: column;
+      align-items: center;
+      line-height: 2.5;
+  
+      .title {
+        font-size: 42px;
+        font-weight: bold;
+  
+      }
+  
+      .intr {
+        font-size: 28px;
+        font-weight: bold;
+      }
+    }
+  }
+  
+  @-webkit-keyframes sk-cubeGridScaleDelay {
+  
+    0%,
+    70%,
+    100% {
+      -webkit-transform: scale3D(1, 1, 1);
+      transform: scale3D(1, 1, 1);
+    }
+  
+    35% {
+      -webkit-transform: scale3D(0, 0, 1);
+      transform: scale3D(0, 0, 1);
+    }
+  }
+  
+  @keyframes sk-cubeGridScaleDelay {
+  
+    0%,
+    70%,
+    100% {
+      -webkit-transform: scale3D(1, 1, 1);
+      transform: scale3D(1, 1, 1);
+    }
+  
+    35% {
+      -webkit-transform: scale3D(0, 0, 1);
+      transform: scale3D(0, 0, 1);
+    }
+  }
+  

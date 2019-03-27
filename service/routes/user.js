@@ -1,7 +1,17 @@
 const express = require('express');
-const router = express.Router();
+const routerAdmin = express.Router();
+const routerCustom = express.Router();
+const User = require('../model/user')
+
 /* GET users listing. */
-router.get('/message/count', function (req, res, next) {
+routerAdmin.get('/message/count', function (req, res, next) {
   res.send(200, 3)
 });
-module.exports = router
+
+routerCustom.post('/user/login', function (req, res, next) {
+  User.login(req, res, next)
+});
+module.exports = {
+  routerAdmin,
+  routerCustom
+}

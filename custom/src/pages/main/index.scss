@@ -1,0 +1,81 @@
+$color-brand:#ffd544;
+
+.index {
+  &_header {
+    background: $color-brand;
+    height: 250px;
+    display: flex;
+
+    .mine-desc {
+      display: flex;
+      padding: 40px 30px;
+      background-color: transparent;
+      box-sizing: border-box;
+      position: relative;
+      align-items: center;
+      margin: 0 24px;
+      width: 100%;
+
+      .avator {
+        border: 5px solid #fff;
+        margin-right: 20px;
+      }
+
+      .mine-info {
+        flex: 1;
+        overflow: hidden;
+        padding-right: 30px;
+        box-sizing: border-box;
+        position: relative;
+
+        &_name {
+          font-weight: bold;
+          color: #131314;
+          margin-top: 10px;
+          font-size: 40px;
+          max-width: 440px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        &_tag {
+          margin-top: 10px;
+          font-size: 24px;
+          color: #999;
+        }
+      }
+    }
+  }
+
+  &_content {
+    background: #fff;
+  }
+
+  &_footer {
+
+    .at-article {
+      margin-top: 20px;
+      background: #fff;
+      padding: 10px;
+
+      .title {
+        padding: 30px 0 36px 56px;
+        font-size: 40px;
+        position: relative;
+
+        &:before {
+          content: " ";
+          position: absolute;
+          left: 30px;
+          top: 34px;
+          width: 8px;
+          bottom: 40px;
+          background-color: $color-brand;
+          border-radius: 4px;
+        }
+      }
+    }
+
+  }
+}
