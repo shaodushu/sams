@@ -5,7 +5,7 @@ const mysql = {
     user: "root",
     password: "qQW3A0f(s!Cf",
     database: "sams",
-    clearExpired: true,//是否自动检查和清除过期的会话
+    clearExpired: true, //是否自动检查和清除过期的会话
     checkExpirationInterval: 60000, //一分钟检查一次
     expiration: 3600000, //最大的生命期
     createDatabaseTable: true,

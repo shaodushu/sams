@@ -18,6 +18,21 @@ const repairRouter = require('./routes/repair')
 
 const app = express();
 
+//session
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const config = require('./config')
+const sessionStore = new MySQLStore(config.mysql)
+app.use(session({
+  key: 'shaodushu', //自行设置密钥
+  secret: '123456', //私钥
+  cookie: {
+    maxAge: 60000 //最大生命期
+  },
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false
+}))
 /**
  * 跨域
  * 只有本地8080/8081可以访问

@@ -2,7 +2,20 @@ import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
 import { View, Button, Text, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtGrid, AtAvatar, AtIcon, AtTag, AtNoticebar } from 'taro-ui';
+import {
+	AtGrid,
+	AtAvatar,
+	AtIcon,
+	AtTag,
+	AtNoticebar,
+	AtActionSheet,
+	AtActionSheetItem,
+	AtRadio,
+	AtFloatLayout,
+	AtForm,
+	AtInput,
+	AtButton
+} from 'taro-ui';
 
 import './index.scss';
 import IVerses from '../../interfaces/verses';
@@ -66,7 +79,8 @@ class Index extends Component {
 			origin: '',
 			author: '',
 			content: ''
-		}
+		},
+		value: ''
 	};
 	componentWillReceiveProps() {}
 	componentWillMount() {
@@ -93,6 +107,11 @@ class Index extends Component {
 				recommend: data
 			});
 		} catch (error) {}
+	}
+	handleChange(value) {
+		this.setState({
+			value
+		});
 	}
 	render() {
 		const { recommend } = this.state,
@@ -153,6 +172,24 @@ class Index extends Component {
 						</View>
 					</View>
 				</View>
+
+				<AtFloatLayout isOpened title="加入我们">
+					<AtRadio
+						options={[ { label: '学生', value: 'option1' }, { label: '运维', value: 'option2' } ]}
+						value={this.state.value}
+						onClick={this.handleChange.bind(this)}
+					/>
+					<AtInput
+						name="value"
+						title="手机号"
+						type="text"
+						placeholder="单行文本"
+						value={this.state.value}
+						onChange={this.handleChange.bind(this)}
+					/>
+
+					<AtButton type="primary">提交</AtButton>
+				</AtFloatLayout>
 			</View>
 		);
 	}
