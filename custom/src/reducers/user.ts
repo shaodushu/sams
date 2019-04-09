@@ -1,7 +1,11 @@
 import Taro from '@tarojs/taro';
-import { USER_LOGIN, USER_INFO } from '../constants/user';
+import { USER_LOGIN, USER_INFO, USER_BOUND, USER_WATER, USER_ELECTRICITY } from '../constants/user';
+import { formatTime } from '../libs/tools';
+
 const INITIAL_STATE = {
-	userinfo: {}
+	userinfo: {},
+	water: [],
+	electricity: []
 };
 const filterRole = (role) => {
 	switch (role) {
@@ -20,6 +24,7 @@ const filterRole = (role) => {
 };
 export default function user(state = INITIAL_STATE, action) {
 	switch (action.type) {
+		case USER_BOUND:
 		case USER_LOGIN: {
 			let userinfo = action.payload;
 			userinfo = {
@@ -39,6 +44,31 @@ export default function user(state = INITIAL_STATE, action) {
 				...state,
 				userinfo
 			};
+		}
+		case USER_WATER: {
+			let water = action.payload;
+
+			return {
+				...state,
+				water: water.map((item) => {
+					return {
+						...item,
+						date: formatTime(item.date)
+					}
+				})
+			}
+		}
+		case USER_ELECTRICITY: {
+			let electricity = action.payload;
+			return {
+				...state,
+				electricity: electricity.map((item) => {
+					return {
+						...item,
+						date: formatTime(item.date)
+					}
+				})
+			}
 		}
 		default:
 			return state;

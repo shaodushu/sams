@@ -15,6 +15,7 @@ const asyncHandleDbArgs = (sql, args) => {
         });
     })
 }
+
 /**
  * Promise 无参数
  * @param {String} sql 
@@ -28,7 +29,56 @@ const asyncHandleDb = (sql) => {
         });
     })
 }
+
+/**
+ * Promise 事务操作
+ * @param {*} sqlparamsEntities 
+ */
+const asyncHandleDbExecTrans = (sqlparamsEntities) => {
+    return new Promise((resolve, reject) => {
+        connection.execTrans(sqlparamsEntities, (err, result) => {
+            if (!err) {
+                resolve(result);
+            } else reject(err);
+        })
+    })
+}
+
+/**
+ * Promise GetSession handle
+ * @param {*} store 
+ * @param {*} key 
+ */
+const asyncHandleGetSession = (store, key) => {
+    return new Promise((resolve, reject) => {
+        store.get(key, (error, session) => {
+            if (session) {
+                resolve(session);
+            } else reject(error);
+        })
+    })
+}
+
+/**
+ * Promise SetSession handle
+ * @param {*} store 
+ * @param {*} key 
+ * @param {*} data 
+ */
+const asyncHandleSetSession = (store, key, data) => {
+    return new Promise((resolve, reject) => {
+        store.set(key, data, (error) => {
+            //TODO abnormal
+            if (error) {
+                resolve(result);
+            } else reject(error);
+        })
+    })
+}
 module.exports = {
     asyncHandleDbArgs,
-    asyncHandleDb
+    asyncHandleDb,
+    asyncHandleDbExecTrans,
+    asyncHandleGetSession,
+    asyncHandleSetSession
 }

@@ -68,7 +68,7 @@ class Launch extends Component {
 		try {
 			const setting = await Taro.getSetting();
 			if (setting.authSetting['scope.userInfo']) {
-                console.log('%c 用户已授权', 'color:#19be6b');
+				console.log('%c 用户已授权', 'color:#19be6b');
 				const checkUser = await dispatchCheckUser();
 				if (checkUser) {
 					console.log('%c 用户已存在', 'color:#19be6b');
@@ -132,18 +132,9 @@ class Launch extends Component {
 		}
 	}
 	jumpUrl(jumpPath) {
-        Taro.redirectTo({
-            url: jumpPath
-        });
-		// if (jumpPath === '/pages/main/index') {
-		// 	Taro.switchTab({
-		// 		url: jumpPath
-		// 	});
-		// } else {
-		// 	Taro.redirectTo({
-		// 		url: jumpPath
-		// 	});
-		// }
+		Taro.redirectTo({
+			url: jumpPath
+		});
 	}
 	render() {
 		const { loading, isAuth } = this.state;

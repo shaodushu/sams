@@ -20,7 +20,7 @@ export function createApiAction(type, url, method = 'GET', data = {}, extra = {}
       })
       return payload
     } catch (error) {
-      throw(error)
+      throw (error)
     }
   }
 }

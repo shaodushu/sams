@@ -21,11 +21,17 @@ export default async (options) => {
       if (error.status === 403 || error.status === 401) {
         Taro.clearStorageSync('userinfo')
         Taro.clearStorageSync('token')
-        Taro.redirectTo({
+        Taro.reLaunch({
           url: '/pages/main/launch'
         })
       } else if (error.status === 500) {
-        Util.showModal('提示', error.data.message, false);
+        debugger
+        if (error.data && error.data.msg) {
+          Util.showModal('提示', error.data.msg, false);
+        } else {
+          Util.showModal('提示', error, false);
+        }
+
       } else if (error.status === 502) {
         Util.showToast('服务器正在外太空遨游')
       } else if (error.status === 404) {

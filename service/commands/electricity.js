@@ -12,10 +12,12 @@ const batchCreate = (length) => {
 }
 const total = (name) => `SELECT COUNT(*) FROM electricity LEFT JOIN apartment ON apartment.id=electricity.aid WHERE name LIKE "${name}%"`
 const list = (name) => `SELECT apartment.name,electricity.* FROM electricity LEFT JOIN apartment ON apartment.id=electricity.aid where name LIKE "${name}%" limit ?,?`
+const listByOpenid = `SELECT a.name AS aname,s.aid,s.dnum,e.consume,e.date FROM USER u LEFT JOIN student s ON s.uid=u.id LEFT JOIN apartment a ON a.id=s.aid LEFT JOIN electricity e ON e.dnum=s.dnum WHERE openid=?`
 
 module.exports = {
     create,
     batchCreate,
     total,
-    list
+    list,
+    listByOpenid
 }

@@ -54,8 +54,77 @@ const login = async (req, res, next) => {
         next(createError(err))
     }
 }
+/**
+ * 用户绑定
+ */
+const bound = async (req, res, next) => {
+    let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params),
+        {
+            sessionStore,
+            headers
+        } = req,
+        userinfo = {},
+        {
+            role,
+            tel
+        } = param,
+        session;
+
+    //找到对应的用户信息
+    try {
+        session = await operation.asyncHandleGetSession(sessionStore, headers.cookie)
+        userinfo = JSON.parse(session)
+    } catch (error) {
+        next(createError(403));
+    }
+
+    
+    //查询用户信息
+    const result = await operation.asyncHandleDbArgs(commands.user.userinfo, [userinfo.openid])
+    if (result.length > 0) {
+        userinfo = result[0]
+        if (userinfo.role > -1) {
+            next(createError('该用户已被绑定'));
+        } else {
+            userinfo.role = role
+        }
+    } else {
+        next(createError(500));
+    }
+    //更新对应角色表UID
+    let sql1, params1 = [userinfo.id, tel]
+    if (role === 1) {
+        sql1 = commands.admin.updateUidByTel
+    } else if (role === 2) {
+        sql1 = commands.student.updateUidByTel
+    } else if (role === 3) {
+        sql1 = commands.repair.updateUidByTel
+    } else {
+        next(createError('Params error'))
+    }
+    //更新USER表角色
+    let sql2 = commands.user.updateUser,
+        params2 = [role, new Date(), userinfo.id]
+    //开始事务操作
+    try {
+        await operation.asyncHandleDbExecTrans([{
+            sql: sql1,
+            params: params1
+        }, {
+            sql: sql2,
+            params: params2
+        }])
+        res.send(200, userinfo)
+    } catch (error) {
+        res.send(500, {
+            msg: '手机填写是否正确'
+        })
+    }
+    //查询
+    
+}
+
 module.exports = {
-    create,
-    list,
-    login
+    login,
+    bound
 }

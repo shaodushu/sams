@@ -24,7 +24,15 @@ class App extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
 	config: Config = {
-		pages: [ 'pages/main/launch', 'pages/main/index' ],
+		pages: [
+			'pages/main/launch',
+			'pages/main/index',
+			'pages/main/visit',
+			'pages/mine/index',
+			'pages/mine/bound',
+			'pages/mine/water',
+			'pages/mine/electricity'
+		],
 		window: {
 			backgroundTextStyle: 'light',
 			navigationBarBackgroundColor: '#fff',
@@ -33,15 +41,15 @@ class App extends Component {
 		}
 	};
 
-	componentDidMount() {}
+	componentDidMount() { }
 
-	componentDidShow() {}
+	componentDidShow() { }
 
-	componentDidHide() {}
+	componentDidHide() { }
 
-	componentCatchError() {}
+	componentCatchError() { }
 
-	componentDidCatchError() {}
+	componentDidCatchError() { }
 
 	// 在 App 类中的 render() 函数没有实际作用
 	// 请勿修改此函数

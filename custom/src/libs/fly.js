@@ -25,7 +25,6 @@ class httpRequest {
       // 在发送请求之前做些什么
       return config
     }, error => {
-      console.log(error)
       return Promise.reject(error)
     })
 

@@ -1,4 +1,5 @@
 const mysql = require('mysql')
+const async = require('async');
 const config = require('../config')
 const pool = mysql.createPool(config.mysql);
 
@@ -45,8 +46,74 @@ const queryArgs = (sql, args, callback) => {
         });
     });
 }
+/**
+ * 事务操作
+ * @param {*} sqlparamsEntities 
+ * @param {*} callback 
+ */
+const execTrans = (sqlparamsEntities, callback) => {
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            callback(err, null);
+        }
+        connection.beginTransaction(function (err) {
+            if (err) {
+                connection.release()
+                callback(err, null);
+            }
+            console.log("开始执行transaction，共执行" + sqlparamsEntities.length + "条数据");
+            let funcAry = [];
+            sqlparamsEntities.forEach(function (sql_param) {
+                let temp = function (cb) {
+                    let sql = sql_param.sql;
+                    let param = sql_param.params;
+                    connection.query(sql, param, function (tErr, rows, fields) {
+                        if (tErr) {
+                            connection.rollback(function () {
+                                console.log("事务失败，" + JSON.parse(JSON.stringify(sql_param)) + "，ERROR：" + tErr);
+                                throw tErr;
+                            });
+                        } else if (rows.affectedRows == 0) {
+                            cb(rows, null);
+                        } else {
+                            cb(null, rows);
+                        }
+                    })
+                };
+                funcAry.push(temp);
+            });
+
+            async.series(funcAry, function (error, result) {
+                console.log("transaction error: " + error);
+                if (error) {
+                    connection.rollback(function (err) {
+                        console.log("transaction error: " + err);
+                        connection.release();
+                        callback(error.message, null);
+                    });
+                } else {
+                    connection.commit(function (err, info) {
+                        console.log("transaction info: " + JSON.stringify(info));
+                        if (err) {
+                            console.log("执行事务失败，" + err);
+                            connection.rollback(function (err) {
+                                console.log("transaction error: " + err);
+                                connection.release();
+                                callback(err, null);
+                            });
+                        } else {
+                            connection.release();
+                            callback(null, result);
+                        }
+                    })
+                }
+            })
+        });
+    });
+}
 module.exports = {
     queryReturn,
     query,
-    queryArgs
+    queryArgs,
+    execTrans
 }

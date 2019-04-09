@@ -21,6 +21,7 @@ import './index.scss';
 import IVerses from '../../interfaces/verses';
 import IUser from '../../interfaces/user';
 import { dispatchSetMenu } from '../../actions/app';
+import * as Util from '../../libs/util';
 
 // #region 书写注意
 //
@@ -79,15 +80,10 @@ class Index extends Component {
 			origin: '',
 			author: '',
 			content: ''
-		},
-		value: ''
+		}
 	};
-	componentWillReceiveProps() {}
-	componentWillMount() {
-		const { userinfo, dispatchSetMenu } = this.props;
-		dispatchSetMenu(userinfo.role);
-	}
-	componentWillUnmount() {}
+	componentWillReceiveProps() { }
+	componentWillUnmount() { }
 
 	componentDidShow() {
 		// Taro.request({
@@ -95,9 +91,12 @@ class Index extends Component {
 		// });
 		//获取推荐
 		this.getRecommend();
+		//获取菜单
+		const { userinfo, dispatchSetMenu } = this.props;
+		dispatchSetMenu(userinfo.role);
 	}
 
-	componentDidHide() {}
+	componentDidHide() { }
 	async getRecommend() {
 		try {
 			const { data } = await Taro.request({
@@ -106,12 +105,18 @@ class Index extends Component {
 			this.setState({
 				recommend: data
 			});
-		} catch (error) {}
+		} catch (error) { }
 	}
-	handleChange(value) {
-		this.setState({
-			value
-		});
+	handleRoleBound() {
+		const { userinfo } = this.props;
+		if (userinfo.role > -1) {
+			Util.jumpUrl('/pages/mine/index');
+		} else {
+			Util.jumpUrl('/pages/mine/bound');
+		}
+	}
+	handleGoto(obj) {
+		Util.jumpUrl(obj.path)
 	}
 	render() {
 		const { recommend } = this.state,
@@ -127,11 +132,11 @@ class Index extends Component {
 								<AtTag size="small">{userinfo.roleName}</AtTag>
 							</View>
 						</View>
-						<AtIcon prefixClass="sams" value="idcard" size="30" />
+						<AtIcon prefixClass="sams" value="idcard" size="30" onClick={this.handleRoleBound.bind(this)} />
 					</View>
 				</View>
 				<View className="index_content">
-					<AtGrid mode="rect" data={menuList} />
+					<AtGrid mode="rect" data={menuList} onClick={this.handleGoto.bind(this)} />
 				</View>
 				<View className="index_footer">
 					<View className="at-article">
@@ -172,24 +177,6 @@ class Index extends Component {
 						</View>
 					</View>
 				</View>
-
-				<AtFloatLayout isOpened title="加入我们">
-					<AtRadio
-						options={[ { label: '学生', value: 'option1' }, { label: '运维', value: 'option2' } ]}
-						value={this.state.value}
-						onClick={this.handleChange.bind(this)}
-					/>
-					<AtInput
-						name="value"
-						title="手机号"
-						type="text"
-						placeholder="单行文本"
-						value={this.state.value}
-						onChange={this.handleChange.bind(this)}
-					/>
-
-					<AtButton type="primary">提交</AtButton>
-				</AtFloatLayout>
 			</View>
 		);
 	}

@@ -11,6 +11,11 @@ routerAdmin.get('/message/count', function (req, res, next) {
 routerCustom.post('/user/login', function (req, res, next) {
   User.login(req, res, next)
 });
+
+routerCustom.post('/user/bound', function (req, res, next) {
+  User.bound(req, res, next)
+});
+
 module.exports = {
   routerAdmin,
   routerCustom

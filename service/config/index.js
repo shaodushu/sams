@@ -9,7 +9,7 @@ const mysql = {
     checkExpirationInterval: 60000, //一分钟检查一次
     expiration: 3600000, //最大的生命期
     createDatabaseTable: true,
-    connectionLimit: 1,
+    connectionLimit: 10,
     charset: 'utf8mb4_bin',
     schema: {
         tableName: 'sessions', //表名
@@ -23,7 +23,7 @@ const mysql = {
 //微信参数配置
 const wx = {
     appid: "wxde57f96494c9231d",
-    secret: "53944f5fd0aa035089730d227087295d"
+    secret: "a917db6e0e676e3ded8c908b7f88f155"
 }
 module.exports = {
     mysql,

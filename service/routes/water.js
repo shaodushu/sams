@@ -6,6 +6,9 @@ const Water = require('../model/water')
 routerAdmin.post('/water/list', function (req, res, next) {
     Water.list(req, res, next)
 });
+routerCustom.get('/water/list', function (req, res, next) {
+    Water.listByOpenid(req, res, next)
+})
 module.exports = {
     routerAdmin,
     routerCustom
