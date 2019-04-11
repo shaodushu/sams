@@ -4,7 +4,7 @@ import { View, Text, Picker } from '@tarojs/components';
 import { AtList, AtListItem, AtRadio, AtTextarea, AtForm, AtInput, AtButton } from 'taro-ui';
 import { dispatchApartmentList } from '../../actions/apartment'
 
-import './visit.scss'
+// import './visit.scss'
 
 interface IProps {
     dispatchApartmentList;
@@ -13,9 +13,9 @@ interface IProps {
 @connect((state) => state.apartment, {
     dispatchApartmentList
 })
-class Visit extends Component<IProps, {}> {
+class Repair extends Component<IProps, {}> {
     config: Config = {
-        navigationBarTitleText: '拜访信息'
+        navigationBarTitleText: '报修信息'
     };
     state = {
         selectorChecked: '暂无',
@@ -84,4 +84,4 @@ class Visit extends Component<IProps, {}> {
         )
     }
 }
-export default Visit
+export default Repair

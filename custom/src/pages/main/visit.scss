@@ -1,71 +1,22 @@
 .visit {
-    .panel {
+    .page-section {
+        display: flex;
+        justify-content: space-between;
 
-        &_tilte {
-            position: relative;
-            margin-bottom: 1.06667rem;
-            padding-left: 1.06667rem;
-            color: #6a6a77;
-            font-size: .68267rem;
-            font-weight: 700;
-            line-height: 1.5;
+        position: relative;
+        padding: 24px 0;
+        color: #333;
+        background-color: #FFF;
+        margin-left: 32px;
+        margin-right: 32px;
+        margin-bottom: 1PX;
+        position: relative;
+        font-size: 32px;
+        border-bottom: 1PX solid #eee;
+    }
 
-            &::before {
-                content: "";
-                display: inline-block;
-                position: absolute;
-                left: .512rem;
-                top: 50%;
-                margin-top: -.42667rem;
-                width: 2PX;
-                height: .85333rem;
-                background-color: #6190e8;
-                box-shadow: 0 0.14933rem 0.256rem 0 rgba(97, 144, 232, .2);
-                border-radius: 1PX;
-            }
-        }
-
-        &_content {
-            padding: 0 .42667rem;
-
-            .page-section {
-                position: relative;
-                display: -webkit-flex;
-                display: flex;
-                -webkit-justify-content: space-between;
-                justify-content: space-between;
-                padding: .512rem;
-
-                &::before {
-                    top: 0;
-                    bottom: auto;
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    -webkit-transform: scaleY(.5);
-                    transform: scaleY(.5);
-                    border-bottom: 1PX solid #d6e4ef;
-                    -webkit-transform-origin: center;
-                    transform-origin: center;
-                    box-sizing: border-box;
-                    pointer-events: none;
-                }
-
-                &::after {
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    -webkit-transform: scaleY(.5);
-                    transform: scaleY(.5);
-                    border-bottom: 1PX solid #d6e4ef;
-                    -webkit-transform-origin: center;
-                    transform-origin: center;
-                    box-sizing: border-box;
-                    pointer-events: none;
-                }
-            }
-        }
+    &_btn {
+        margin: 20px auto;
+        width: 80%;
     }
 }

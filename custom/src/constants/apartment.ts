@@ -1,0 +1,1 @@
+export const APARTMENT_LIST = 'APARTMENT_LIST'

@@ -31,14 +31,36 @@ class App extends Component {
 			'pages/mine/index',
 			'pages/mine/bound',
 			'pages/mine/water',
-			'pages/mine/electricity'
+			'pages/mine/electricity',
+			'pages/mine/repair',
+			'pages/message/index',
 		],
 		window: {
+			backgroundColor: '#eeeeee',
 			backgroundTextStyle: 'light',
 			navigationBarBackgroundColor: '#fff',
 			navigationBarTitleText: '宿舍管理',
 			navigationBarTextStyle: 'black'
-		}
+		},
+		tabBar: {
+			custom: false,
+			color: '#5d5d5d',
+			selectedColor: '#00adb5',
+			list: [
+				{
+					pagePath: 'pages/main/index',
+					text: '首页',
+					iconPath: './asset/img/home.png',
+					selectedIconPath: './asset/img/home-fill.png'
+				},
+				{
+					pagePath: 'pages/message/index',
+					text: '消息',
+					iconPath: './asset/img/detail.png',
+					selectedIconPath: './asset/img/detail-fill.png'
+				}
+			]
+		},
 	};
 
 	componentDidMount() { }

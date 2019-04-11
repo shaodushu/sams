@@ -3,16 +3,16 @@ const INITIAL_STATE = {
 	menuList: []
 };
 const MENU_LIST = [
-	{
-		iconInfo: { prefixClass: 'sams', value: 'wrench' },
-		value: '维修',
-		path: '',
-		type: 3
-	},
+	// {
+	// 	iconInfo: { prefixClass: 'sams', value: 'wrench' },
+	// 	value: '维修',
+	// 	path: '',
+	// 	type: 3
+	// },
 	{
 		iconInfo: { prefixClass: 'sams', value: 'wrench' },
 		value: '报修',
-		path: '',
+		path: '/pages/mine/repair',
 		type: 2
 	},
 

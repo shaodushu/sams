@@ -30,7 +30,7 @@ interface Launch {
 class Launch extends Component {
 	config: Config = {
 		navigationBarTextStyle: 'white',
-		navigationBarBackgroundColor: '#ffd544'
+		navigationBarBackgroundColor: '#00adb5'
 	};
 	state = {
 		loading: '...',
@@ -132,7 +132,7 @@ class Launch extends Component {
 		}
 	}
 	jumpUrl(jumpPath) {
-		Taro.redirectTo({
+		Taro.switchTab({
 			url: jumpPath
 		});
 	}

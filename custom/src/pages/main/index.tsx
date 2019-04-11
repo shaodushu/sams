@@ -73,7 +73,7 @@ class Index extends Component {
 	config: Config = {
 		navigationBarTitleText: '首页',
 		navigationBarTextStyle: 'white',
-		navigationBarBackgroundColor: '#ffd544'
+		navigationBarBackgroundColor: '#00adb5'
 	};
 	state = {
 		recommend: {
