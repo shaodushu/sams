@@ -88,7 +88,7 @@ class Visit extends Component<IProps, {}> {
             const { imgUrl } = await Fly({ url: API_VISITORS_CREATE, method: 'post', data: { aid, name, tel, reason, idCard } })
             Util.hideLoading()
             this.setState({
-                imgUrl
+                qrCode: imgUrl
             })
 
         } catch (error) {
