@@ -30,7 +30,7 @@ interface Launch {
 class Launch extends Component {
 	config: Config = {
 		navigationBarTextStyle: 'white',
-		navigationBarBackgroundColor: '#00adb5'
+		navigationBarBackgroundColor: '#519CEA'
 	};
 	state = {
 		loading: '...',

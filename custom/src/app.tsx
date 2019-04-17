@@ -45,7 +45,7 @@ class App extends Component {
 		tabBar: {
 			custom: false,
 			color: '#5d5d5d',
-			selectedColor: '#00adb5',
+			selectedColor: '#519CEA',
 			list: [
 				{
 					pagePath: 'pages/main/index',

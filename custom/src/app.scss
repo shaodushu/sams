@@ -1,11 +1,10 @@
-/* Custom Theme */
-$color-brand: #00adb5;
+@import "./mixin.scss";
 // /* 引入 Taro UI 默认样式 */
 @import "~taro-ui/dist/style/index.scss";
-@import './icon.scss';
+@import "./icon.scss";
 
 page {
-  font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
-  height: 100%;
-  background: #F7F7F7;
+    font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
+    height: 100%;
+    background: #F7F7F7;
 }

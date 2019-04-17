@@ -1,4 +1,18 @@
 .visit {
+    height: 100%;
+
+    .qrCode {
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        image {
+            height: 300px;
+            width: 300px;
+            margin: 0 auto;
+        }
+    }
+
     .page-section {
         display: flex;
         justify-content: space-between;
