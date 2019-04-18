@@ -37,7 +37,7 @@ app.use(session({
 }))
 /**
  * 跨域
- * 只有本地8080/8081可以访问
+ * 只有本地8080可以访问
  */
 const corsOptions = {
   origin: ['http://localhost:8080', 'http://192.168.1.248:8080'],

@@ -3,7 +3,7 @@ const mysql = {
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "qQW3A0f(s!Cf",
+    password: "123456",
     database: "sams",
     clearExpired: true, //是否自动检查和清除过期的会话
     checkExpirationInterval: 60000, //一分钟检查一次

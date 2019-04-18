@@ -10,14 +10,20 @@ export const add0 = num => {
 /**
  * 
  * @param timestamp 
+ * @param isAdd0 是否加0
  */
-export const formatTime = (timestamp: string) => {
+
+export const formatTime = (timestamp: string, isAdd0: boolean = true) => {
     if (timestamp) {
         const time = new Date(timestamp)
-        let year = time.getFullYear();
-        let month = add0(time.getMonth() + 1);
+        let year = time.getFullYear(), month;
+        if (isAdd0) {
+            month = add0(time.getMonth() + 1);
+        } else {
+            month = time.getMonth() + 1;
+        }
+
         return year + '-' + month
     } else
         return false
-
 }
