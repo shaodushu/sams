@@ -5,20 +5,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-const operation = require('./libs/operation')
-
-const indexRouter = require('./routes/index');
-const userRouter = require('./routes/user');
-const loginRouter = require('./routes/login');
-const apartmentRouter = require('./routes/apartment');
-const filesRouter = require('./routes/files')
-const adminRouter = require('./routes/admin')
-const studentRouter = require('./routes/student')
-const waterRouter = require('./routes/water')
-const electricityRouter = require('./routes/electricity')
-const repairRouter = require('./routes/repair')
-const visitorsRouter = require('./routes/visitors')
-
 const app = express();
 
 //session
@@ -59,28 +45,27 @@ app.use(express.urlencoded({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-let Test = [
-  indexRouter
-]
 
 let Admin = [
-  loginRouter,
-  userRouter.routerAdmin,
-  apartmentRouter,
-  filesRouter,
-  adminRouter,
-  studentRouter.routerAdmin,
-  waterRouter.routerAdmin,
-  electricityRouter.routerAdmin,
-  repairRouter.routerAdmin
+  require('./admin/routers/login'),
+  require('./admin/routers/user'),
+  require('./admin/routers/apartment'),
+  require('./admin/routers/files'),
+  require('./admin/routers/admin'),
+  require('./admin/routers/student'),
+  require('./admin/routers/water'),
+  require('./admin/routers/electricity'),
+  require('./admin/routers/repair')
 ]
 let Custom = [
-  userRouter.routerCustom,
-  waterRouter.routerCustom,
-  electricityRouter.routerCustom,
-  visitorsRouter.routerCustom
+  require('./custom/routers/user'),
+  require('./custom/routers/water'),
+  require('./custom/routers/electricity'),
+  require('./custom/routers/visitors'),
+  require('./custom/routers/maintain'),
+  require('./custom/routers/files')
 ]
-app.use('/test', [...Test]);
+
 app.use('/admin', [...Admin]);
 app.use('/custom', [...Custom]);
 

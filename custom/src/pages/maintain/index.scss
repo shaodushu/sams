@@ -1,0 +1,27 @@
+.maintain {
+    height: 100%;
+
+    &_layout {
+        margin-top: 20%;
+    }
+
+    &_btn {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+
+        &_reject {
+            background: #ff9900;
+            border: 1PX solid #ff9900;
+            width: 92%;
+            margin: 10px auto;
+        }
+
+        &_dispose {
+            background: #2db7f5;
+            border: 1PX solid #2db7f5;
+            width: 92%;
+            margin: 10px auto;
+        }
+    }
+}

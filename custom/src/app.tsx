@@ -32,7 +32,8 @@ class App extends Component {
 			'pages/mine/bound',
 			'pages/mine/water',
 			'pages/mine/electricity',
-			'pages/mine/repair',
+			'pages/maintain/index',
+			'pages/maintain/maintain',
 			'pages/message/index',
 		],
 		window: {

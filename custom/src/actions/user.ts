@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro';
-import { USER_LOGIN, USER_INFO, USER_BOUND, USER_WATER, USER_ELECTRICITY } from '../constants/user';
-import { API_USER_LOGIN, API_USER_BOUND, API_USER_WATER, API_USER_ELECTRICITY } from '../constants/api';
+import { USER_LOGIN, USER_INFO, USER_BOUND, USER_WATER, USER_ELECTRICITY, USER_BOUND_REMOVE } from '../constants/user';
+import { API_USER_LOGIN, API_USER_BOUND, API_USER_WATER, API_USER_ELECTRICITY, API_USER_BOUND_REMOVE } from '../constants/api';
 import { createApiAction, createAction } from '../libs/redux';
 
 /**
@@ -13,6 +13,8 @@ export const dispatchBoundUser = (role: String, tel: String) =>
 		role,
 		tel
 	});
+
+export const dispatchBoundRemove = (role: String) => createApiAction(USER_BOUND_REMOVE, API_USER_BOUND_REMOVE, 'get', { role })
 
 export const dispatchSetUser = (userinfo: Object) => createAction(USER_INFO, { userinfo });
 

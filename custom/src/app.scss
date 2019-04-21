@@ -3,6 +3,12 @@
 @import "~taro-ui/dist/style/index.scss";
 @import "./icon.scss";
 
+.at-textarea {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
 page {
     font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
     height: 100%;
