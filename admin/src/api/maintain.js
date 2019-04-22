@@ -3,7 +3,7 @@ import axios from '@/libs/api.request'
 
 export const list = (data) => {
   return axios.request({
-    url: 'admin/water/list',
+    url: 'admin/maintain/list',
     data,
     method: 'post'
   })
@@ -11,21 +11,22 @@ export const list = (data) => {
 
 export const remove = (id) => {
   return axios.request({
-    url: 'admin/water/remove?id=' + id,
+    url: 'admin/maintain/remove?id=' + id,
     method: 'get'
   })
 }
 
 export const update = (data) => {
   return axios.request({
-    url: 'admin/water/update',
+    url: 'admin/maintain/update',
     data,
     method: 'post'
   })
 }
+
 export const single = (id) => {
   return axios.request({
-    url: 'admin/water/single?id=' + id,
+    url: 'admin/maintain/single?id=' + id,
     method: 'get'
   })
 }

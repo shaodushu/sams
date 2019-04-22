@@ -4,45 +4,33 @@ const operation = require('../../libs/operation')
 const tools = require('../../libs/tool')
 const commands = require('../../commands')
 
-const create = async (req, res, next) => {
-    try {
-        let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params);
-        let time = new Date()
-        param.createDate = time
-        param.updateDate = time
-        const result = await operation.asyncHandleDbArgs(commands.repair.create(Object.keys(param)), [Object.values(param)])
-        if (result.affectedRows === 1) {
-            res.send(200, {
-                msg: '创建成功'
-            })
-        } else {
-            res.send(500, {
-                msg: '创建失败'
-            })
-        }
-    } catch (err) {
-        next(createError(err))
-    }
-}
 const list = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params);
-        let total = await operation.asyncHandleDb(commands.repair.total(param.name || ''))
-        let list = await operation.asyncHandleDbArgs(commands.repair.list(param.name || ''), [(param.page - 1) * param.size, param.page * param.size])
-        res.send(200, {
-            list,
+        let total = await operation.asyncHandleDb(commands.maintain.total(param.rtel || ''))
+        let list = await operation.asyncHandleDbArgs(commands.maintain.list(param.rtel || ''), [(param.page - 1) * param.size, param.page * param.size])
+        for (let i = 0; i < list.length; i++) {
+            let { aid, rid } = list[i]
+            if (aid) {
+                list[i].apartment = (await operation.asyncHandleDbArgs(commands.apartment.single, [aid]))[0]
+            }
+            if (rid) {
+                list[i].repair = (await operation.asyncHandleDbArgs(commands.repair.single, [rid]))[0]
+            }
+        }
+        res.status(200).send({
+            list: list,
             total: total[0]['COUNT(id)'],
             msg: '查询成功'
         })
     } catch (err) {
-        next(createError(err))
+        res.status(500).send({ msg: err.message })
     }
 }
-
 const remove = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params), { id } = param;
-        const result = await operation.asyncHandleDbArgs(commands.repair.remove, [new Date(), parseInt(id)])
+        const result = await operation.asyncHandleDbArgs(commands.maintain.remove, [new Date(), parseInt(id)])
         if (result.affectedRows === 1) {
             res.status(200).send({ msg: '删除成功' })
         } else {
@@ -56,9 +44,9 @@ const remove = async (req, res, next) => {
 const single = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params), { id } = param;
-        const result = await operation.asyncHandleDbArgs(commands.repair.single, [parseInt(id)])
+        const result = await operation.asyncHandleDbArgs(commands.maintain.single, [parseInt(id)])
         if (result.length === 1) {
-            res.status(200).send({ msg: '查询成功',data:{...result[0]} })
+            res.status(200).send({ msg: '查询成功', data: { ...result[0] } })
         } else {
             res.status(500).send({ msg: '查询失败' })
         }
@@ -84,7 +72,7 @@ const update = async (req, res, next) => {
 
             }
         }
-        const result = await operation.asyncHandleDbArgs(commands.repair.update(key), [param.id])
+        const result = await operation.asyncHandleDbArgs(commands.maintain.update(key), [param.id])
         if (result.affectedRows === 1) {
             res.status(200).send({ msg: '更新成功' })
         } else {
@@ -96,7 +84,6 @@ const update = async (req, res, next) => {
 }
 
 module.exports = {
-    create,
     list,
     remove,
     single,

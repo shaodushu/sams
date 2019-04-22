@@ -14,3 +14,25 @@ export const list = (data) => {
     method: 'post'
   })
 }
+
+export const remove = (id) => {
+  return axios.request({
+    url: 'admin/repair/remove?id=' + id,
+    method: 'get'
+  })
+}
+
+export const update = (data) => {
+  return axios.request({
+    url: 'admin/repair/update',
+    data,
+    method: 'post'
+  })
+}
+
+export const single = (id) => {
+  return axios.request({
+    url: 'admin/repair/single?id=' + id,
+    method: 'get'
+  })
+}

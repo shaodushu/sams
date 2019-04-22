@@ -55,7 +55,8 @@ let Admin = [
   require('./admin/routers/student'),
   require('./admin/routers/water'),
   require('./admin/routers/electricity'),
-  require('./admin/routers/repair')
+  require('./admin/routers/repair'),
+  require('./admin/routers/maintain')
 ]
 let Custom = [
   require('./custom/routers/user'),

@@ -78,12 +78,12 @@
 </template>
 
 <script>
-import SelectBox from '@/components/select-box'
-import * as apartment_api from "@/api/apartment"
-import * as water_api from "@/api/water"
-import * as file_api from "@/api/file"
+import SelectBox from "@/components/select-box";
+import * as apartment_api from "@/api/apartment";
+import * as water_api from "@/api/water";
+import * as file_api from "@/api/file";
 export default {
-  name: 'water',
+  name: "water",
   data() {
     return {
       total: 0,
@@ -93,12 +93,12 @@ export default {
         name: null
       },
       formItem: {
-        aid: '',
+        aid: "",
         file: null
       },
       tabelLoading: true,
       importLoading: true,
-      modal: false,//用水导入面板
+      modal: false, //用水导入面板
       apartmentList: [],
       waterData: [],
       waterColumns: [
@@ -109,30 +109,92 @@ export default {
         },
         {
           title: "公寓名称",
+          minWidth: 90,
           align: "center",
           key: "name"
         },
         {
           title: "宿舍号",
+          minWidth: 90,
           align: "center",
           key: "dnum"
         },
         {
           title: "用水",
+          minWidth: 90,
           align: "center",
           key: "consume"
         },
         {
           title: "日期",
-          width: 120,
+          minWidth: 120,
           align: "center",
           key: "date"
         },
         {
           title: "创建时间",
-          width: 120,
+          minWidth: 120,
           align: "center",
           key: "createDate"
+        },
+        {
+          title: "操作",
+          fixed: "right",
+          align: "center",
+          minWidth: 90,
+          render: (h, params) => {
+            return h(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "center",
+                  padding: "5px"
+                }
+              },
+              [
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "warning",
+                      size: "small"
+                    },
+                    on: {
+                      click: async () => {
+                        try {
+                          await water_api.remove(params.row.id);
+                          this.getWater();
+                        } catch (error) {}
+                      }
+                    }
+                  },
+                  "删除"
+                ),
+                // h(
+                //   "Button",
+                //   {
+                //     props: {
+                //       type: "info",
+                //       size: "small"
+                //     },
+                //     style: {
+                //       marginTop: "5px"
+                //     },
+                //     on: {
+                //       click: () => {
+                //         this.$router.push({
+                //           path: "/water/detail/" + params.row.id
+                //         });
+                //       }
+                //     }
+                //   },
+                //   "详情"
+                // )
+              ]
+            );
+          }
         }
       ]
     };
@@ -155,46 +217,44 @@ export default {
     },
     async getWater() {
       try {
-        this.tabelLoading = true
-        const result = await water_api.list(this.pageData)
-        this.waterData = result.data.list
-        this.total = result.data.total
-        this.tabelLoading = false
-        this.$Message.info(result.data.msg)
+        this.tabelLoading = true;
+        const result = await water_api.list(this.pageData);
+        this.waterData = result.data.list;
+        this.total = result.data.total;
+        this.tabelLoading = false;
+        this.$Message.info(result.data.msg);
       } catch (error) {
-        this.tabelLoading = false
+        this.tabelLoading = false;
       }
     },
     async handleOpenModal() {
-      this.modal = true
+      this.modal = true;
       try {
         const { list } = (await apartment_api.list({
           page: 1,
           size: 100
-        })).data
-        this.apartmentList = list
-      } catch (error) {
-
-      }
+        })).data;
+        this.apartmentList = list;
+      } catch (error) {}
     },
     async handleImport() {
-      this.importLoading = true
-      let formData = new FormData()
-      formData.append('file', this.formItem.file)
-      formData.append('aid', this.formItem.aid)
+      this.importLoading = true;
+      let formData = new FormData();
+      formData.append("file", this.formItem.file);
+      formData.append("aid", this.formItem.aid);
       try {
-        const list = await file_api.importWater(formData)
-        this.importLoading = false
+        const list = await file_api.importWater(formData);
+        this.importLoading = false;
         this.getWater();
       } catch (error) {
-        this.importLoading = false
+        this.importLoading = false;
       }
     },
     handleChange(value) {
-      this.formItem.aid = value
+      this.formItem.aid = value;
     },
     handleClear(value) {
-      this.formItem.aid = value
+      this.formItem.aid = value;
     },
     handleUpload(file) {
       this.formItem.file = file;

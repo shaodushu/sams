@@ -22,3 +22,17 @@ export const list = (data) => {
     method: 'post'
   })
 }
+
+export const remove = (id) => {
+  return axios.request({
+    url: 'admin/apartment/remove?id='+id,
+    method: 'get'
+  })
+}
+
+export const single = (id) => {
+  return axios.request({
+    url: 'admin/apartment/single?id=' + id,
+    method: 'get'
+  })
+}

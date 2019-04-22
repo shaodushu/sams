@@ -49,7 +49,7 @@
 <script>
 import * as apartment_api from "@/api/apartment";
 export default {
-  name: 'apartment',
+  name: "apartment",
   data() {
     return {
       total: 0,
@@ -68,39 +68,100 @@ export default {
         },
         {
           title: "公寓名称",
+          minWidth: 90,
           align: "center",
           key: "name"
         },
         {
           title: "公寓类型",
+          minWidth: 90,
           align: "center",
           render: (h, params) => {
-            return h('b', params.row.type === 1 ? '男生公寓' : '女生公寓')
+            return h("b", params.row.type === 1 ? "男生公寓" : "女生公寓");
           }
         },
         {
           title: "楼层",
-          width: 70,
+          minWidth: 90,
           align: "center",
           key: "floor"
         },
         {
           title: "每层房间数",
-          width: 100,
+          minWidth: 100,
           align: "center",
           key: "roomNum"
         },
         {
           title: "规则",
-          width: 120,
+          minWidth: 90,
           align: "center",
           key: "rule"
         },
         {
           title: "通知",
-          width: 120,
+          minWidth: 90,
           align: "center",
           key: "notice"
+        },
+        {
+          title: "操作",
+          fixed: "right",
+          align: "center",
+          minWidth: 90,
+          render: (h, params) => {
+            return h(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "center",
+                  padding: "5px"
+                }
+              },
+              [
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "warning",
+                      size: "small"
+                    },
+                    on: {
+                      click: async () => {
+                        try {
+                          await apartment_api.remove(params.row.id);
+                          this.getApartment();
+                        } catch (error) {}
+                      }
+                    }
+                  },
+                  "删除"
+                ),
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "info",
+                      size: "small"
+                    },
+                    style: {
+                      marginTop: "5px"
+                    },
+                    on: {
+                      click: () => {
+                        this.$router.push({
+                          path: "/apartment/detail/" + params.row.id
+                        });
+                      }
+                    }
+                  },
+                  "详情"
+                )
+              ]
+            );
+          }
         }
       ]
     };
@@ -120,18 +181,18 @@ export default {
     },
     async getApartment() {
       try {
-        this.tabelLoading = true
-        const result = await apartment_api.list(this.pageData)
-        this.apartmentData = result.data.list
-        this.total = result.data.total
-        this.tabelLoading = false
-        this.$Message.info(result.data.msg)
+        this.tabelLoading = true;
+        const result = await apartment_api.list(this.pageData);
+        this.apartmentData = result.data.list;
+        this.total = result.data.total;
+        this.tabelLoading = false;
+        this.$Message.info(result.data.msg);
       } catch (error) {
-        this.tabelLoading = false
+        this.tabelLoading = false;
       }
     },
     handleCreate() {
-      this.$router.push({ path: '/apartment/create' })
+      this.$router.push({ path: "/apartment/create" });
     }
   },
   mounted() {

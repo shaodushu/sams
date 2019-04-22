@@ -40,30 +40,30 @@
   </Card>
 </template>
 <script>
-import { create } from '@/api/apartment';
+import * as apartment_api from "@/api/apartment";
 export default {
-  name: 'apartment_create',
+  name: "apartment_create",
   data() {
     return {
       formItem: {
-        name: '',
+        name: "",
         type: 1,
         floor: 0,
         roomNum: 0,
-        rule: '',
-        notice: ''
+        rule: "",
+        notice: ""
       }
-    }
+    };
   },
   methods: {
     async handleClick() {
       try {
-        const result = await create(this.formItem)
-        this.$Message.info(result.data.msg)
+        const result = await apartment_api.create(this.formItem);
+        this.$Message.info(result.data.msg);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
   }
-}
+};
 </script>
