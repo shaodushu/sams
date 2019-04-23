@@ -55,6 +55,12 @@ const list = async (req, res, next) => {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params);
         let total = await operation.asyncHandleDb(commands.apartment.total(param.name || ''))
         let list = await operation.asyncHandleDbArgs(commands.apartment.list(param.name || ''), [(param.page - 1) * param.size, param.page * param.size])
+        for (let i = 0; i < list.length; i++) {
+            let { aid } = list[i]
+            if (aid) {
+                list[i].admin = (await operation.asyncHandleDbArgs(commands.admin.single, [aid]))[0]
+            }
+        }
         res.send(200, {
             list,
             total: total[0]['COUNT(id)'],

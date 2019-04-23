@@ -43,10 +43,24 @@
         </Card>
       </Col>
     </Row>
+    <Modal
+      v-model="boundModal"
+      draggable
+      scrollable
+      title="绑定宿舍管理员"
+      @on-ok="handleClick"
+      :loading="boundLoading"
+    >
+      <Select v-model="adminModel" filterable style="width:200px" @on-change="handleChange">
+        <Avatar :src="admin.avatar" slot="prefix" size="small"/>
+        <Option v-for="item in adminList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+      </Select>
+    </Modal>
   </div>
 </template>
 
 <script>
+import * as admin_api from "@/api/admin";
 import * as apartment_api from "@/api/apartment";
 export default {
   name: "apartment",
@@ -57,6 +71,14 @@ export default {
         page: 1,
         size: 10,
         name: null
+      },
+      boundModal: false,
+      boundLoading: true,
+      adminModel: "",
+      adminList: [],
+      admin: {
+        value: null,
+        avatar: ""
       },
       tabelLoading: true,
       apartmentData: [],
@@ -71,6 +93,69 @@ export default {
           minWidth: 90,
           align: "center",
           key: "name"
+        },
+        {
+          title: "宿舍管理员",
+          minWidth: 150,
+          align: "center",
+          render: (h, params) => {
+            let renderDom = [];
+            if (params.row.admin) {
+              renderDom = [
+                h(
+                  "b",
+                  params.row.admin
+                    ? `${params.row.admin.name}/${params.row.admin.tel}`
+                    : ""
+                ),
+                h(
+                  "Button",
+                  {
+                    props: {
+                      size: "small",
+                      type: "warning"
+                    },
+                    style: {
+                      marginTop: "10px"
+                    },
+                    on: {
+                      click: async () => {
+                        try {
+                          await admin_api.apartmentBind({
+                            id: params.row.id,
+                            type: "unbind"
+                          });
+                          this.getApartment();
+                        } catch (error) {
+                          console.log(error);
+                        }
+                      }
+                    }
+                  },
+                  "解绑"
+                )
+              ];
+            } else {
+              renderDom = [
+                h(
+                  "Button",
+                  {
+                    props: {
+                      size: "small"
+                    },
+                    on: {
+                      click: () => {
+                        this.boundModal = true;
+                        this.apartment = params.row;
+                      }
+                    }
+                  },
+                  "绑定"
+                )
+              ];
+            }
+            return h("div", renderDom);
+          }
         },
         {
           title: "公寓类型",
@@ -163,7 +248,8 @@ export default {
             );
           }
         }
-      ]
+      ],
+      apartment: {}
     };
   },
   methods: {
@@ -193,10 +279,47 @@ export default {
     },
     handleCreate() {
       this.$router.push({ path: "/apartment/create" });
+    },
+    async getAdminList() {
+      try {
+        const { list } = (await admin_api.list({
+          page: 1,
+          size: 100,
+          name: null
+        })).data;
+        this.adminList = list.map(item => {
+          return {
+            label: item.name,
+            value: item.id,
+            avatar: item.avatar
+          };
+        });
+      } catch (error) {}
+    },
+    handleChange(value) {
+      this.admin = this.adminList.filter(item => item.value === value)[0];
+    },
+    async handleClick() {
+      try {
+        this.boundLoading = true;
+        const { id } = this.apartment,
+          { value } = this.admin;
+        await admin_api.apartmentBind({
+          id,
+          aid: value,
+          type: "bind"
+        });
+        this.boundModal = false;
+        this.getApartment();
+      } catch (error) {
+        this.boundLoading = false;
+        // this.boundModal = true;
+      }
     }
   },
   mounted() {
     this.getApartment();
+    this.getAdminList();
   }
 };
 </script>

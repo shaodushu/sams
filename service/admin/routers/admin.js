@@ -17,4 +17,7 @@ router.get('/admin/single', function (req, res, next) {
 router.post('/admin/update', function (req, res, next) {
     Admin.update(req, res, next)
 });
+router.post('/admin/apartment/bind', function (req, res, next) {
+    Admin.apartmentBind(req, res, next)
+});
 module.exports = router

@@ -56,7 +56,7 @@ const single = async (req, res, next) => {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params), { id } = param;
         const result = await operation.asyncHandleDbArgs(commands.admin.single, [parseInt(id)])
         if (result.length === 1) {
-            res.status(200).send({ msg: '查询成功',data:{...result[0]} })
+            res.status(200).send({ msg: '查询成功', data: { ...result[0] } })
         } else {
             res.status(500).send({ msg: '查询失败' })
         }
@@ -91,10 +91,35 @@ const update = async (req, res, next) => {
         res.status(500).send({ msg: err.message })
     }
 }
+
+const apartmentBind = async (req, res, next) => {
+    try {
+        let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params), { id, aid, type } = param;
+        if (type === 'bind') {
+            if (!aid) {
+                res.status(500).send({ msg: 'aid不能为空' })
+                return;
+            }
+        } else {
+            aid = null
+        }
+
+        const result = await operation.asyncHandleDbArgs(commands.apartment.bindAdmin, [new Date(), aid, id])
+        if (result.affectedRows === 1) {
+            res.status(200).send({ msg: '绑定成功' })
+        } else {
+            res.status(500).send({ msg: '绑定失败' })
+        }
+    } catch (error) {
+        res.status(500).send({ msg: err.message })
+    }
+}
+
 module.exports = {
     create,
     list,
     remove,
     single,
-    update
+    update,
+    apartmentBind
 }

@@ -36,3 +36,11 @@ export const single = (id) => {
     method: 'get'
   })
 }
+
+export const apartmentBind = (data) => {
+  return axios.request({
+    url: 'admin/admin/apartment/bind',
+    data,
+    method: 'post'
+  })
+}
