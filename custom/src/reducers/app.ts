@@ -40,6 +40,12 @@ const MENU_LIST = [
 	// 	path: '',
 	// 	type: 2
 	// }
+	{
+		iconInfo: { prefixClass: 'sams', value: 'apartment', size: 21 },
+		value: '公寓',
+		path: '/pages/mine/apartment',
+		type: 2
+	}
 ];
 export default function app(state = INITIAL_STATE, action) {
 	switch (action.type) {

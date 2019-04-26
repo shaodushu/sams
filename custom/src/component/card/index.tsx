@@ -8,10 +8,10 @@ interface IProps {
 }
 class Card extends Component<IProps, {}> {
     render() {
-        const { customStyle, children } = this.props
+        const { customStyle } = this.props
         return (
             <View className='card' style={customStyle}>
-                {children}
+                {this.props.children}
             </View>
         )
     }

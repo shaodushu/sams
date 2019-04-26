@@ -102,7 +102,7 @@ class Maintain extends Component<IProps, {}> {
         let { dnum, stel, damage, files } = this.state, { list } = this.props;
         return (
             <View className='maintain'>
-                <Card>
+                <Card customStyle="padding:10rpx">
                     <View className='page-section'>
                         <Text>维修公寓</Text>
                         <View>
@@ -128,11 +128,9 @@ class Maintain extends Component<IProps, {}> {
                         maxLength="11"
                         placeholder="联系方式"
                         value={stel}
-                        border={false}
+                        // border={false}
                         onChange={this.handleSetTel.bind(this)}
                     />
-                </Card>
-                <Card customStyle="padding:10rpx;">
                     <AtTextarea
                         value={damage}
                         onChange={this.handleSetDamage.bind(this)}

@@ -5,5 +5,4 @@ const router = express.Router();
 router.get('/message/count', function (req, res, next) {
   res.send(200, 3)
 });
-
 module.exports = router

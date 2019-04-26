@@ -106,7 +106,7 @@ class Index extends Component<IProps, {}> {
             <View className="maintain">
                 <AtList hasBorder={false}>
                     {list.map((item, index) => <AtListItem key={index} title={'寝室-' + item.dnum}
-                        note={Tools.formatTime(item.createDate, true)} arrow='right' iconInfo={item.iconInfo} onClick={this.handleClick.bind(this, item)} />
+                        note={Tools.formatTime(item.createDate, true)} arrow='right' iconInfo={item.iconInfo} onClick={this.handleClick.bind(this, item)} hasBorder={index !== (list.lenght - 1)} />
                     )}
 
                 </AtList>

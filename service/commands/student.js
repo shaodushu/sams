@@ -5,6 +5,7 @@ const updateUidByTel = 'UPDATE student SET uid=? WHERE tel=?'
 const updateUidByUid = 'UPDATE student SET uid=NULL  WHERE uid=?'
 const remove = 'UPDATE student SET updateDate=?,cancel=1 WHERE id=?'
 const single = 'SELECT * FROM student WHERE id=?'
+const singleByUid = 'SELECT * FROM student WHERE uid=?'
 const update = (key) => `UPDATE student SET ${key}  WHERE id=?`
 
 module.exports = {
@@ -15,5 +16,6 @@ module.exports = {
     updateUidByUid,
     remove,
     single,
+    singleByUid,
     update
 }

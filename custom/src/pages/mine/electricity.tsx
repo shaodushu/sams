@@ -28,7 +28,7 @@ class Electricity extends Component<IProps, {}> {
 						prefixClass: 'sams',
 						size: 25,
 						color: '#2db7f5', value: 'electrical-equipment',
-					}} />)}
+					}} hasBorder={index !== (electricity.length - 1)} />)}
 
 			</AtList>
 		);

@@ -32,6 +32,7 @@ class App extends Component {
 			'pages/mine/bound',
 			'pages/mine/water',
 			'pages/mine/electricity',
+			'pages/mine/apartment',
 			'pages/maintain/index',
 			'pages/maintain/maintain',
 			'pages/message/index',
@@ -56,7 +57,7 @@ class App extends Component {
 				},
 				{
 					pagePath: 'pages/message/index',
-					text: '消息',
+					text: '公告',
 					iconPath: './asset/img/detail.png',
 					selectedIconPath: './asset/img/detail-fill.png'
 				}

@@ -64,9 +64,9 @@ let Custom = [
   require('./custom/routers/electricity'),
   require('./custom/routers/visitors'),
   require('./custom/routers/maintain'),
-  require('./custom/routers/files')
+  require('./custom/routers/files'),
+  require('./custom/routers/apartment')
 ]
-
 app.use('/admin', [...Admin]);
 app.use('/custom', [...Custom]);
 
