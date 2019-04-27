@@ -17,6 +17,7 @@ const studentRouter = require('./routes/student')
 const waterRouter = require('./routes/water')
 const electricityRouter = require('./routes/electricity')
 const repairRouter = require('./routes/repair')
+const visitorsRouter = require('./routes/visitors')
 
 const app = express();
 
@@ -40,7 +41,7 @@ app.use(session({
  * 只有本地8080可以访问
  */
 const corsOptions = {
-  origin: ['http://localhost:8080', 'http://192.168.1.248:8080'],
+  origin: ['http://localhost:8080', 'http://192.168.1.248:8080', 'http://192.168.0.3:8080'],
   optionsSuccessStatus: 200
 }
 
@@ -76,7 +77,8 @@ let Admin = [
 let Custom = [
   userRouter.routerCustom,
   waterRouter.routerCustom,
-  electricityRouter.routerCustom
+  electricityRouter.routerCustom,
+  visitorsRouter.routerCustom
 ]
 app.use('/test', [...Test]);
 app.use('/admin', [...Admin]);

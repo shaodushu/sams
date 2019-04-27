@@ -2,7 +2,7 @@ export default {
   /**
    * @description 配置显示在浏览器标签的title
    */
-  title: '宿舍管理系统',
+  title: '学生公寓信息管理系统',
   /**
    * @description token在Cookie中存储的天数，默认1天
    */

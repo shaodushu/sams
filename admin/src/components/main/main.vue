@@ -22,7 +22,7 @@
           <div
             v-show="!collapsed"
             style="background: linear-gradient(45deg, #0081ff, #1cbbb4);font-size: 20px;text-align: center;color: #fff;border-radius: 4px;padding: 5px;"
-          >宿舍管理</div>
+          >学生公寓信息管理</div>
           <img v-show="collapsed" :src="minLogo" key="min-logo">
         </div>
       </side-menu>

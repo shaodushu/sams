@@ -1,29 +1,43 @@
-.login{
+.login {
     width: 100%;
     height: 100%;
-    background-image: url('../../assets/images/login-bg.jpg');
-    background-size: cover;
-    background-position: center;
+    // background-image: url('../../assets/images/login-bg.jpg');
+    // background-size: cover;
+    // background-position: center;
+    background: linear-gradient(to bottom right, #47518b, #343a66);
     position: relative;
-    &-con{
-        position: absolute;
-        right: 160px;
-        top: 50%;
-        transform: translateY(-60%);
-        width: 300px;
-        &-header{
-            font-size: 16px;
-            font-weight: 300;
-            text-align: center;
-            padding: 30px 0;
-        }
-        .form-con{
-            padding: 10px 0 0;
-        }
-        .login-tip{
-            font-size: 10px;
-            text-align: center;
-            color: #c3c3c3;
+
+    // 
+    .bg-main {
+        background: url('../../assets/images/bg-top.png') top no-repeat;
+        width: 100%;
+        height: 100%;
+        padding-top: 80px;
+        position: relative;
+        .login-con {
+            position: absolute;
+            right: 160px;
+            top: 50%;
+            transform: translateY(-60%);
+            width: 300px;
+
+            &-header {
+                font-size: 16px;
+                font-weight: 300;
+                text-align: center;
+                padding: 30px 0;
+            }
+
+            .form-con {
+                padding: 10px 0 0;
+            }
+
+            .login-tip {
+                font-size: 10px;
+                text-align: center;
+                color: #c3c3c3;
+            }
         }
     }
+
 }
