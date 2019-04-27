@@ -25,11 +25,10 @@ export default async (options) => {
           url: '/pages/main/launch'
         })
       } else if (error.status === 500) {
-        debugger
         if (error.data && error.data.msg) {
           Util.showModal('提示', error.data.msg, false);
         } else {
-          Util.showModal('提示', error, false);
+          Util.showModal('提示', '500', false);
         }
 
       } else if (error.status === 502) {

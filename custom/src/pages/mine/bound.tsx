@@ -1,3 +1,8 @@
+/** 
+ * 解除用户关联，可能查询信息异常。其他表也做和用户绑定的操作
+ * 
+ * 
+*/
 import Taro, { Component, Config } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
@@ -16,7 +21,7 @@ class Bound extends Component<IProps, {}> {
 		navigationBarTitleText: '用户绑定'
 	};
 	state = {
-		role: '1',
+		role: '2',
 		tel: ''
 	};
 	handleSetRole(role) {
@@ -53,7 +58,7 @@ class Bound extends Component<IProps, {}> {
 				<AtForm>
 					<AtRadio
 						options={[
-							{ label: '宿管', value: '1' },
+							// { label: '宿管', value: '1' },
 							{ label: '学生', value: '2' },
 							{ label: '运维', value: '3' }
 						]}

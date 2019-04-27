@@ -49,7 +49,7 @@
 <script>
 import * as student_api from "@/api/student";
 export default {
-  name: 'student',
+  name: "student",
   data() {
     return {
       total: 0,
@@ -64,7 +64,7 @@ export default {
         {
           type: "index",
           width: 60,
-          fixed: 'left',
+          fixed: "left",
           align: "center"
         },
         {
@@ -78,16 +78,16 @@ export default {
           width: 70,
           align: "center",
           render: (h, params) => {
-            return h('Avatar', {
+            return h("Avatar", {
               props: {
-                size: 'large',
+                size: "large",
                 src: params.row.avatar
               }
-            })
+            });
           }
         },
         {
-          title: "公寓名称",
+          title: "所属公寓",
           align: "center",
           width: 100,
           key: "aname"
@@ -133,6 +133,65 @@ export default {
           align: "center",
           width: 120,
           key: "updateDate"
+        },
+        {
+          title: "操作",
+          fixed: "right",
+          align: "center",
+          minWidth: 90,
+          render: (h, params) => {
+            return h(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "center",
+                  padding: "5px"
+                }
+              },
+              [
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "warning",
+                      size: "small"
+                    },
+                    on: {
+                      click: async () => {
+                        try {
+                          await student_api.remove(params.row.id);
+                          this.getStudent();
+                        } catch (error) {}
+                      }
+                    }
+                  },
+                  "删除"
+                ),
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "info",
+                      size: "small"
+                    },
+                    style: {
+                      marginTop: "5px"
+                    },
+                    on: {
+                      click: () => {
+                        this.$router.push({
+                          path: "/student/detail/" + params.row.id
+                        });
+                      }
+                    }
+                  },
+                  "详情"
+                )
+              ]
+            );
+          }
         }
       ]
     };
@@ -152,18 +211,18 @@ export default {
     },
     async getStudent() {
       try {
-        this.tabelLoading = true
-        const result = await student_api.list(this.pageData)
-        this.studentData = result.data.list
-        this.total = result.data.total
-        this.tabelLoading = false
-        this.$Message.info(result.data.msg)
+        this.tabelLoading = true;
+        const result = await student_api.list(this.pageData);
+        this.studentData = result.data.list;
+        this.total = result.data.total;
+        this.tabelLoading = false;
+        this.$Message.info(result.data.msg);
       } catch (error) {
-        this.tabelLoading = false
+        this.tabelLoading = false;
       }
     },
     handleCreate() {
-      this.$router.push({ path: '/student/create' })
+      this.$router.push({ path: "/student/create" });
     }
   },
   mounted() {

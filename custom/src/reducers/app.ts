@@ -3,16 +3,22 @@ const INITIAL_STATE = {
 	menuList: []
 };
 const MENU_LIST = [
-	// {
-	// 	iconInfo: { prefixClass: 'sams', value: 'wrench' },
-	// 	value: '维修',
-	// 	path: '',
-	// 	type: 3
-	// },
+	{
+		iconInfo: { prefixClass: 'sams', value: 'eye' },
+		path: '/pages/main/visit',
+		value: '拜访',
+		type: -1
+	},
+	{
+		iconInfo: { prefixClass: 'sams', value: 'wrench' },
+		value: '维修',
+		path: '/pages/maintain/index',
+		type: 3
+	},
 	{
 		iconInfo: { prefixClass: 'sams', value: 'wrench' },
 		value: '报修',
-		path: '/pages/mine/repair',
+		path: '/pages/maintain/index',
 		type: 2
 	},
 
@@ -28,10 +34,16 @@ const MENU_LIST = [
 		path: '/pages/mine/electricity',
 		type: 2
 	},
+	// {
+	// 	iconInfo: { prefixClass: 'sams', value: 'calendar' },
+	// 	value: '考勤',
+	// 	path: '',
+	// 	type: 2
+	// }
 	{
-		iconInfo: { prefixClass: 'sams', value: 'calendar' },
-		value: '考勤',
-		path: '',
+		iconInfo: { prefixClass: 'sams', value: 'apartment', size: 21 },
+		value: '公寓',
+		path: '/pages/mine/apartment',
 		type: 2
 	}
 ];
@@ -41,13 +53,7 @@ export default function app(state = INITIAL_STATE, action) {
 			let { role } = action.data;
 			return {
 				...state,
-				menuList: [
-					{
-						iconInfo: { prefixClass: 'sams', value: 'eye' },
-						path: '/pages/main/visit',
-						value: '拜访'
-					}
-				].concat(MENU_LIST.filter((item) => item.type === role))
+				menuList: MENU_LIST.filter((item) => (item.type === role || item.type === -1))
 			};
 		}
 		default:

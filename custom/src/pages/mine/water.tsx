@@ -28,7 +28,7 @@ class Water extends Component<IProps, {}> {
 						prefixClass: 'sams',
 						size: 25,
 						color: '#19be6b', value: 'water',
-					}} />)}
+					}} hasBorder={index !== (water.length - 1)} />)}
 
 			</AtList>
 		);

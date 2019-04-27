@@ -1,0 +1,25 @@
+.maintain {
+    height: 100%;
+
+    .page-section {
+        display: flex;
+        justify-content: space-between;
+
+        position: relative;
+        padding: 24px 0;
+        color: #333;
+        background-color: #FFF;
+        margin-left: 32px;
+        padding-right: 32px;
+        margin-bottom: 1PX;
+        position: relative;
+        font-size: 32px;
+        border-bottom: 1PX solid #eee;
+    }
+
+    &_btn {
+        margin: 20px auto;
+        width: 80%;
+    }
+}
+

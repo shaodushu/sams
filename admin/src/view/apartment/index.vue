@@ -43,13 +43,27 @@
         </Card>
       </Col>
     </Row>
+    <Modal
+      v-model="boundModal"
+      draggable
+      scrollable
+      title="绑定宿舍管理员"
+      @on-ok="handleClick"
+      :loading="boundLoading"
+    >
+      <Select v-model="adminModel" filterable style="width:200px" @on-change="handleChange">
+        <Avatar :src="admin.avatar" slot="prefix" size="small"/>
+        <Option v-for="item in adminList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+      </Select>
+    </Modal>
   </div>
 </template>
 
 <script>
+import * as admin_api from "@/api/admin";
 import * as apartment_api from "@/api/apartment";
 export default {
-  name: 'apartment',
+  name: "apartment",
   data() {
     return {
       total: 0,
@@ -57,6 +71,14 @@ export default {
         page: 1,
         size: 10,
         name: null
+      },
+      boundModal: false,
+      boundLoading: true,
+      adminModel: "",
+      adminList: [],
+      admin: {
+        value: null,
+        avatar: ""
       },
       tabelLoading: true,
       apartmentData: [],
@@ -68,41 +90,166 @@ export default {
         },
         {
           title: "公寓名称",
+          minWidth: 90,
           align: "center",
           key: "name"
         },
         {
-          title: "公寓类型",
+          title: "宿舍管理员",
+          minWidth: 150,
           align: "center",
           render: (h, params) => {
-            return h('b', params.row.type === 1 ? '男生公寓' : '女生公寓')
+            let renderDom = [];
+            if (params.row.admin) {
+              renderDom = [
+                h(
+                  "b",
+                  params.row.admin
+                    ? `${params.row.admin.name}/${params.row.admin.tel}`
+                    : ""
+                ),
+                h(
+                  "Button",
+                  {
+                    props: {
+                      size: "small",
+                      type: "warning"
+                    },
+                    style: {
+                      marginTop: "10px"
+                    },
+                    on: {
+                      click: async () => {
+                        try {
+                          await admin_api.apartmentBind({
+                            id: params.row.id,
+                            type: "unbind"
+                          });
+                          this.getApartment();
+                        } catch (error) {
+                          console.log(error);
+                        }
+                      }
+                    }
+                  },
+                  "解绑"
+                )
+              ];
+            } else {
+              renderDom = [
+                h(
+                  "Button",
+                  {
+                    props: {
+                      size: "small"
+                    },
+                    on: {
+                      click: () => {
+                        this.boundModal = true;
+                        this.apartment = params.row;
+                      }
+                    }
+                  },
+                  "绑定"
+                )
+              ];
+            }
+            return h("div", renderDom);
+          }
+        },
+        {
+          title: "公寓类型",
+          minWidth: 90,
+          align: "center",
+          render: (h, params) => {
+            return h("b", params.row.type === 1 ? "男生公寓" : "女生公寓");
           }
         },
         {
           title: "楼层",
-          width: 70,
+          minWidth: 90,
           align: "center",
           key: "floor"
         },
         {
           title: "每层房间数",
-          width: 100,
+          minWidth: 100,
           align: "center",
           key: "roomNum"
         },
         {
           title: "规则",
-          width: 120,
+          minWidth: 90,
           align: "center",
           key: "rule"
         },
         {
           title: "通知",
-          width: 120,
+          minWidth: 90,
           align: "center",
           key: "notice"
+        },
+        {
+          title: "操作",
+          fixed: "right",
+          align: "center",
+          minWidth: 90,
+          render: (h, params) => {
+            return h(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  "flex-direction": "column",
+                  "align-items": "center",
+                  padding: "5px"
+                }
+              },
+              [
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "warning",
+                      size: "small"
+                    },
+                    on: {
+                      click: async () => {
+                        try {
+                          await apartment_api.remove(params.row.id);
+                          this.getApartment();
+                        } catch (error) {}
+                      }
+                    }
+                  },
+                  "删除"
+                ),
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "info",
+                      size: "small"
+                    },
+                    style: {
+                      marginTop: "5px"
+                    },
+                    on: {
+                      click: () => {
+                        this.$router.push({
+                          path: "/apartment/detail/" + params.row.id
+                        });
+                      }
+                    }
+                  },
+                  "详情"
+                )
+              ]
+            );
+          }
         }
-      ]
+      ],
+      apartment: {}
     };
   },
   methods: {
@@ -120,22 +267,59 @@ export default {
     },
     async getApartment() {
       try {
-        this.tabelLoading = true
-        const result = await apartment_api.list(this.pageData)
-        this.apartmentData = result.data.list
-        this.total = result.data.total
-        this.tabelLoading = false
-        this.$Message.info(result.data.msg)
+        this.tabelLoading = true;
+        const result = await apartment_api.list(this.pageData);
+        this.apartmentData = result.data.list;
+        this.total = result.data.total;
+        this.tabelLoading = false;
+        this.$Message.info(result.data.msg);
       } catch (error) {
-        this.tabelLoading = false
+        this.tabelLoading = false;
       }
     },
     handleCreate() {
-      this.$router.push({ path: '/apartment/create' })
+      this.$router.push({ path: "/apartment/create" });
+    },
+    async getAdminList() {
+      try {
+        const { list } = (await admin_api.list({
+          page: 1,
+          size: 100,
+          name: null
+        })).data;
+        this.adminList = list.map(item => {
+          return {
+            label: item.name,
+            value: item.id,
+            avatar: item.avatar
+          };
+        });
+      } catch (error) {}
+    },
+    handleChange(value) {
+      this.admin = this.adminList.filter(item => item.value === value)[0];
+    },
+    async handleClick() {
+      try {
+        this.boundLoading = true;
+        const { id } = this.apartment,
+          { value } = this.admin;
+        await admin_api.apartmentBind({
+          id,
+          aid: value,
+          type: "bind"
+        });
+        this.boundModal = false;
+        this.getApartment();
+      } catch (error) {
+        this.boundLoading = false;
+        // this.boundModal = true;
+      }
     }
   },
   mounted() {
     this.getApartment();
+    this.getAdminList();
   }
 };
 </script>

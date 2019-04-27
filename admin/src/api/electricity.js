@@ -8,3 +8,24 @@ export const list = (data) => {
     method: 'post'
   })
 }
+
+export const remove = (id) => {
+  return axios.request({
+    url: 'admin/electricity/remove?id='+id,
+    method: 'get'
+  })
+}
+export const update = (data) => {
+  return axios.request({
+    url: 'admin/electricity/update',
+    data,
+    method: 'post'
+  })
+}
+
+export const single = (id) => {
+  return axios.request({
+    url: 'admin/electricity/single?id=' + id,
+    method: 'get'
+  })
+}

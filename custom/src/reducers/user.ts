@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import { USER_LOGIN, USER_INFO, USER_BOUND, USER_WATER, USER_ELECTRICITY } from '../constants/user';
+import { USER_LOGIN, USER_INFO, USER_BOUND, USER_WATER, USER_ELECTRICITY, USER_BOUND_REMOVE } from '../constants/user';
 import { formatTime } from '../libs/tools';
 
 const INITIAL_STATE = {
@@ -24,6 +24,7 @@ const filterRole = (role) => {
 };
 export default function user(state = INITIAL_STATE, action) {
 	switch (action.type) {
+		case USER_BOUND_REMOVE:
 		case USER_BOUND:
 		case USER_LOGIN: {
 			let userinfo = action.payload;
@@ -31,6 +32,7 @@ export default function user(state = INITIAL_STATE, action) {
 				...userinfo,
 				roleName: filterRole(userinfo.role)
 			};
+			
 			Taro.setStorageSync('userinfo', userinfo);
 			return {
 				...state,

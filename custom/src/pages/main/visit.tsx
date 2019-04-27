@@ -1,9 +1,10 @@
 import Taro, { Component, Config } from '@tarojs/taro';
 import { connect } from '@tarojs/redux';
-import { View, Text, Picker, Image, Block } from '@tarojs/components';
+import { View, Text, Picker, Image } from '@tarojs/components';
 import { AtTextarea, AtForm, AtInput, AtButton } from 'taro-ui';
 import { dispatchApartmentList } from '../../actions/apartment'
 import Fly from '../../libs/api.request'
+import { Card } from '../../component'
 import { API_VISITORS_CREATE, API_VISITORS_QRCODE } from '../../constants/api'
 import * as Util from '../../libs/util'
 
@@ -102,58 +103,58 @@ class Visit extends Component<IProps, {}> {
                 <Image src={qrCode} mode="aspectFill" lazyLoad></Image>
             </View>
         } else {
-            renderDOM = <Block>
-                <AtForm>
-                    <View className='page-section'>
-                        <Text>拜访公寓</Text>
-                        <View>
-                            <Picker mode='selector' range={list} onChange={this.handleSetArea} value={0} rangeKey='name'>
-                                <View className='picker'>{this.state.selectorChecked}
-                                </View>
-                            </Picker>
-                        </View>
+            renderDOM = <Card>
+                <View className='page-section'>
+                    <Text>拜访公寓</Text>
+                    <View>
+                        <Picker mode='selector' range={list} onChange={this.handleSetArea} value={0} rangeKey='name'>
+                            <View className='picker'>{this.state.selectorChecked}
+                            </View>
+                        </Picker>
                     </View>
-                    <AtInput
-                        name="name"
-                        title="姓名"
-                        type="text"
-                        maxLength="20"
-                        placeholder="姓名"
-                        value={name}
-                        onChange={this.handleSetName.bind(this)}
+                </View>
+                <AtInput
+                    name="name"
+                    title="姓名"
+                    type="text"
+                    maxLength="20"
+                    placeholder="姓名"
+                    value={name}
+                    onChange={this.handleSetName.bind(this)}
+                />
+                <AtInput
+                    name="idCard"
+                    title="身份证"
+                    type="idcard"
+                    maxLength="18"
+                    placeholder="身份证"
+                    value={idCard}
+                    onChange={this.handleSetIdCard.bind(this)}
+                />
+                <AtInput
+                    name="tel"
+                    title="手机号"
+                    type="phone"
+                    maxLength="11"
+                    placeholder="手机号"
+                    value={tel}
+                    onChange={this.handleSetTel.bind(this)}
+                />
+                <View style="width:92%;margin:0 auto;padding:10rpx;">
+                    <AtTextarea
+                        value={reason}
+                        onChange={this.handleSetReason.bind(this)}
+                        maxLength={200}
+                        placeholder='你的事由是...'
                     />
-                    <AtInput
-                        name="idCard"
-                        title="身份证"
-                        type="idcard"
-                        maxLength="18"
-                        placeholder="身份证"
-                        value={idCard}
-                        onChange={this.handleSetIdCard.bind(this)}
-                    />
-                    <AtInput
-                        name="tel"
-                        title="手机号"
-                        type="phone"
-                        maxLength="11"
-                        placeholder="手机号"
-                        value={tel}
-                        onChange={this.handleSetTel.bind(this)}
-                    />
-                    <View style="width:92%;margin:0 auto;padding:10rpx;">
-                        <AtTextarea
-                            value={reason}
-                            onChange={this.handleSetReason.bind(this)}
-                            maxLength={200}
-                            placeholder='你的事由是...'
-                        />
-                    </View>
-
-                </AtForm>
-                <AtButton type="primary" className="visit_btn" onClick={this.handleVisit}>
-                    提交
+                </View>
+                <View className="visit_btn">
+                    <AtButton type="primary" onClick={this.handleVisit}>
+                        提交
 				</AtButton>
-            </Block>
+                </View>
+
+            </Card>
         }
         return (
             <View className='visit'>

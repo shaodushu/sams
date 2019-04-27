@@ -139,7 +139,7 @@ class Index extends Component {
 					<AtGrid mode="rect" data={menuList} onClick={this.handleGoto.bind(this)} />
 				</View>
 				<View className="index_footer">
-					<View className="at-article">
+					{/* <View className="at-article">
 						<View className="title">通知</View>
 						<View className="at-article__info">2017-05-07</View>
 						<View className="at-article__content">
@@ -162,7 +162,7 @@ class Index extends Component {
 								</View>
 							</View>
 						</View>
-					</View>
+					</View> */}
 					<View className="at-article">
 						<View className="title">每日一推</View>
 
