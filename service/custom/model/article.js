@@ -24,6 +24,13 @@ const newsList = async (req, res, next) => {
                 url: config.cuit.url + newsUrl.substring(1)
             })
             let { html, text } = util.newsContent(htmlDetail)
+            if (htmlDetail.indexOf('<img') > -1) {
+                html=html.replace(
+                    /<img.+?src="/g,
+                    `<img style='object-fit: scale-down;height: 100%;width: 100%;margin:0 auto;' src="${config.cuit.url}`
+                )
+            }
+
             list[i] = Object.assign({}, { title, author, html, text, source, audit, date, hits })
         }
         //TODO 获取分页的文章详情
