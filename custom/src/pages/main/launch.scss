@@ -80,23 +80,10 @@
             }
         }
 
-
-
         &_text {
             color: #282148;
             font-size: 26px;
             font-weight: bold;
-
-        }
-
-        &_wave {
-            position: absolute;
-            width: 100%;
-            bottom: -1PX;
-            left: 0;
-            z-index: 99;
-            mix-blend-mode: screen;
-            height: 100px;
 
         }
     }

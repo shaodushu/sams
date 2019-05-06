@@ -63,26 +63,12 @@ const login = async (req, res, next) => {
 const bound = async (req, res, next) => {
     let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params),
         {
-            sessionStore,
-            headers
+            userinfo
         } = req,
-        userinfo = {},
         {
             role,
             tel
-        } = param,
-        session;
-
-    //找到对应的用户信息
-    try {
-        session = await operation.asyncHandleGetSession(sessionStore, headers.cookie)
-        userinfo = JSON.parse(session)
-    } catch (error) {
-        res.status(403).send({ msg: '访问权限失效' })
-        return;
-    }
-
-
+        } = param;
     //查询用户信息
     const result = await operation.asyncHandleDbArgs(commands.user.userinfo, [userinfo.openid])
     if (result.length > 0) {
@@ -135,21 +121,10 @@ const bound = async (req, res, next) => {
 const remove = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params), {
-            sessionStore,
-            headers
+            userinfo
         } = req, {
             role
-        } = param,
-            userinfo = {};
-
-        //TODO 找到对应的用户信息
-        try {
-            userinfo = await operation.asyncHandleGetSession(sessionStore, headers.cookie)
-            userinfo = JSON.parse(userinfo)
-        } catch (error) {
-            res.status(403).send({ msg: '访问权限失效' })
-            return;
-        }
+        } = param;
         //TODO 更新对应角色表UID
         let sql1, params1 = [userinfo.id]
         if (role === '1') {

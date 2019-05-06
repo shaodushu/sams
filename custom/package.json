@@ -17,7 +17,7 @@
 		"dev:h5": "npm run build:h5 -- --watch",
 		"dev:rn": "npm run build:rn -- --watch"
 	},
-	"author": "",
+	"author": "shaodushu",
 	"license": "MIT",
 	"dependencies": {
 		"@tarojs/async-await": "1.2.26",
@@ -37,7 +37,8 @@
 		"redux": "^4.0.0",
 		"redux-logger": "^3.0.6",
 		"redux-thunk": "^2.3.0",
-		"taro-ui": "^2.1.0"
+		"taro-ui": "^2.1.0",
+		"we-rich": "^1.0.2"
 	},
 	"devDependencies": {
 		"@tarojs/plugin-babel": "1.2.26",

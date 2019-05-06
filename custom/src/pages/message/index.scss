@@ -1,7 +1,54 @@
-.message {
+$border-color:#ececec;
 
-    // padding: 10px 0;
-    &-card {
-        margin: 20px;
+.message {
+    overflow: hidden;
+
+    .card {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: none;
+        box-shadow: 0 1PX 6px $border-color;
+        position: relative;
+
+        &::before {
+            content: "";
+            display: block;
+            background: inherit;
+            filter: blur(10px);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 10px;
+            left: 10px;
+            z-index: -1;
+            opacity: 0.4;
+            transform-origin: 0 0;
+            border-radius: inherit;
+            transform: scale(1, 1);
+        }
+
+        &-content {
+            // font-weight: bold;
+            text-overflow: -o-ellipsis-lastline;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+    }
+}
+
+.at-card__header {
+    border-bottom: 1PX solid $border-color;
+
+    &-title {
+        color: #333;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    &-extra {
+        color: #999;
     }
 }

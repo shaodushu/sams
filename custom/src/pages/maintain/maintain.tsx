@@ -60,7 +60,10 @@ class Maintain extends Component<IProps, {}> {
         try {
             const { aid, dnum, stel, damage, files } = this.state;
             Util.showLoading('提交中...')
-            await Fly({ url: API_MAINTAIN_CREATE, method: 'post', data: { aid, dnum, stel, damage, imgList: files.map((item: any) => item.url).join(',') } })
+            await Fly(API_MAINTAIN_CREATE, 'post',
+                {
+                    aid, dnum, stel, damage, imgList: files.map((item: any) => item.url).join(',')
+                })
             Util.hideLoading()
             Taro.navigateBack()
         } catch (error) {
@@ -76,7 +79,8 @@ class Maintain extends Component<IProps, {}> {
                     filePath: files[files.length - 1].url,
                     name: 'file',
                     header: {
-                        'content-type': 'multipart/form-data'
+                        'content-type': 'multipart/form-data',
+                        Cookie: Taro.getStorageSync('token')
                     },
                 })
                 files[files.length - 1] = {
@@ -102,7 +106,7 @@ class Maintain extends Component<IProps, {}> {
         let { dnum, stel, damage, files } = this.state, { list } = this.props;
         return (
             <View className='maintain'>
-                <Card customStyle="padding:10rpx">
+                <Card customStyle="padding:10rpx" title="基本信息">
                     <View className='page-section'>
                         <Text>维修公寓</Text>
                         <View>
@@ -131,12 +135,16 @@ class Maintain extends Component<IProps, {}> {
                         // border={false}
                         onChange={this.handleSetTel.bind(this)}
                     />
+                </Card>
+                <Card customStyle="padding:10rpx" title="破损情况">
                     <AtTextarea
                         value={damage}
                         onChange={this.handleSetDamage.bind(this)}
                         maxLength={200}
                         placeholder='破损情况...'
                     />
+                </Card>
+                <Card customStyle="padding:10rpx" title="报修图片">
                     <AtImagePicker
                         length={4}
                         count={5}

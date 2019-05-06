@@ -10,4 +10,8 @@ router.get('/visitors/queryQrCode', function (req, res, next) {
     Visitors.queryQrCode(req, res, next)
 });
 
+router.get('/visitors/delete', function (req, res, next) {
+    Visitors.remove(req, res, next)
+})
+
 module.exports = router

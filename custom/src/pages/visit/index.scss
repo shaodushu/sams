@@ -1,0 +1,37 @@
+.visit {
+    height: 100%;
+    position: relative;
+
+    .qrcode {
+        padding: 50px;
+        margin: 50px;
+        background: #eee;
+        text-align: center;
+
+        image {
+            height: 300px;
+            width: 300px;
+            margin: 0 auto;
+        }
+    }
+
+    .page-section {
+        display: flex;
+        justify-content: space-between;
+
+        position: relative;
+        padding: 24px 0;
+        color: #333;
+        background-color: #FFF;
+        margin-left: 32px;
+        margin-right: 32px;
+        margin-bottom: 1PX;
+        position: relative;
+        font-size: 32px;
+        border-bottom: 1PX solid #eee;
+    }
+
+    &_btn {
+        padding: 50px;
+    }
+}

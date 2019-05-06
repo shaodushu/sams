@@ -12,7 +12,7 @@ export const add0 = num => {
  * @param timestamp 
  * @param isAdd0 是否加0
  */
-export const formatTime = (timestamp: string, isFull = false) => {
+export const formatTime = (timestamp: string | number, isFull = false) => {
     if (timestamp) {
         const time = new Date(timestamp)
         let year = time.getFullYear();

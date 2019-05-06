@@ -85,5 +85,6 @@ export default {
   showLoading,
   showToast,
   showModal,
-  openSetting
+  openSetting,
+  jumpUrl
 }

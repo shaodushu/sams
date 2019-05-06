@@ -7,11 +7,7 @@ import fly from './api.request'
 export function createApiAction(type, url, method = 'GET', data = {}, extra = {}) {
   return async (dispatch) => {
     try {
-      const payload = await fly({
-        url,
-        method,
-        data
-      })
+      const payload = await fly(url, method, data)
       dispatch({
         type,
         data,

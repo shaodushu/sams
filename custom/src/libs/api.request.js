@@ -5,9 +5,9 @@ import Fly from './fly'
 
 const fly = new Fly()
 
-export default async (options) => {
+export default async (url, method = 'get', data) => {
   try {
-    return await fly.send(options)
+    return await fly.send({ url, method, data })
   } catch (error) {
     if (error.status === 0) {
       Util.showToast(error.message)

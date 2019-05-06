@@ -3,7 +3,7 @@ const mysql = {
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "123456",
+    password: "qQW3A0f(s!Cf",
     database: "sams",
     clearExpired: true, //是否自动检查和清除过期的会话
     checkExpirationInterval: 60000, //一分钟检查一次
@@ -25,7 +25,12 @@ const wx = {
     appid: "wxde57f96494c9231d",
     secret: "a917db6e0e676e3ded8c908b7f88f155"
 }
+//网站资源
+const cuit={
+    url:"https://www.cuit.edu.cn/"
+}
 module.exports = {
     mysql,
-    wx
+    wx,
+    cuit
 }

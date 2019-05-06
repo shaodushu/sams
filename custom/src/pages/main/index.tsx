@@ -1,22 +1,16 @@
 import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { View, Button, Text, Image } from '@tarojs/components';
+import { View, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import {
 	AtGrid,
 	AtAvatar,
 	AtIcon,
 	AtTag,
-	AtNoticebar,
-	AtActionSheet,
-	AtActionSheetItem,
-	AtRadio,
-	AtFloatLayout,
-	AtForm,
-	AtInput,
-	AtButton
+	AtActivityIndicator
 } from 'taro-ui';
 
+import { Card } from '../../component'
 import './index.scss';
 import IVerses from '../../interfaces/verses';
 import IUser from '../../interfaces/user';
@@ -73,22 +67,29 @@ class Index extends Component {
 	config: Config = {
 		navigationBarTitleText: '首页',
 		navigationBarTextStyle: 'white',
-		navigationBarBackgroundColor: '#519CEA'
+		navigationBarBackgroundColor: '#519CEA',
+		enablePullDownRefresh: true
 	};
 	state = {
 		recommend: {
 			origin: '',
 			author: '',
 			content: ''
-		}
+		},
+		loading: true
 	};
 	componentWillReceiveProps() { }
 	componentWillUnmount() { }
-
+	onPullDownRefresh() {
+		//获取菜单
+		const { userinfo, dispatchSetMenu } = this.props;
+		dispatchSetMenu(userinfo.role);
+		Taro.stopPullDownRefresh()
+	}
 	componentDidShow() {
-		// Taro.request({
-		// 	url: 'http://localhost:3000/test'
-		// });
+		this.setState({
+			loading: true
+		})
 		//获取推荐
 		this.getRecommend();
 		//获取菜单
@@ -103,7 +104,8 @@ class Index extends Component {
 				url: 'https://api.gushi.ci/all.json'
 			});
 			this.setState({
-				recommend: data
+				recommend: data,
+				loading: false
 			});
 		} catch (error) { }
 	}
@@ -119,11 +121,11 @@ class Index extends Component {
 		Util.jumpUrl(obj.path)
 	}
 	render() {
-		const { recommend } = this.state,
+		const { recommend, loading } = this.state,
 			{ userinfo, menuList } = this.props;
 		return (
 			<View className="index">
-				<View className="index_header">
+				<View className="header">
 					<View className="mine-desc">
 						<AtAvatar className="avator" image={userinfo.avatarUrl} />
 						<View className="mine-info">
@@ -134,48 +136,28 @@ class Index extends Component {
 						</View>
 						<AtIcon prefixClass="sams" value="idcard" size="30" onClick={this.handleRoleBound.bind(this)} />
 					</View>
+					<Image
+						className="wave"
+						mode="scaleToFill"
+						src={require('../../asset/img/wave.gif')}
+					/>
 				</View>
-				<View className="index_content">
+				<View className="content">
 					<AtGrid mode="rect" data={menuList} onClick={this.handleGoto.bind(this)} />
 				</View>
-				<View className="index_footer">
-					{/* <View className="at-article">
-						<View className="title">通知</View>
-						<View className="at-article__info">2017-05-07</View>
+				<View className="footer">
+					<Card title="每日一推">
 						<View className="at-article__content">
-							<View className="at-article__section">
-								<View className="at-article__p">
-									这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本落。这是文本段落。1234567890123456789012345678901234567890
-									ABCDEFGHIJKLMNOPQRSTUVWXYZ
-								</View>
-							</View>
-						</View>
-					</View>
-
-					<View className="at-article">
-						<View className="title">规则</View>
-						<View className="at-article__content">
-							<View className="at-article__section">
-								<View className="at-article__p">
-									这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本段落。这是文本落。这是文本段落。1234567890123456789012345678901234567890
-									ABCDEFGHIJKLMNOPQRSTUVWXYZ
-								</View>
-							</View>
-						</View>
-					</View> */}
-					<View className="at-article">
-						<View className="title">每日一推</View>
-
-						<View className="at-article__content">
-							<View className="at-article__section">
+							{loading && <AtActivityIndicator mode='center'></AtActivityIndicator>}
+							{!loading && <View className="at-article__section">
 								<View className="at-article__h3">{recommend.content}</View>
 								<View className="at-article__info">
 									{recommend.author} 《{recommend.origin}》
 								</View>
-								<View className="at-article__p" />
-							</View>
+							</View>}
 						</View>
-					</View>
+
+					</Card>
 				</View>
 			</View>
 		);

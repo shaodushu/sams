@@ -3,15 +3,20 @@ import { View } from '@tarojs/components';
 import './index.scss'
 
 interface IProps {
-    children;
+    children?;
     customStyle?;
+    title?: String;
 }
 class Card extends Component<IProps, {}> {
     render() {
-        const { customStyle } = this.props
+        const { customStyle, title } = this.props
         return (
             <View className='card' style={customStyle}>
-                {this.props.children}
+                {title && <View className="title">{title}</View>}
+
+                <View className="content">
+                    {this.props.children}
+                </View>
             </View>
         )
     }

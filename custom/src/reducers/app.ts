@@ -5,7 +5,7 @@ const INITIAL_STATE = {
 const MENU_LIST = [
 	{
 		iconInfo: { prefixClass: 'sams', value: 'eye' },
-		path: '/pages/main/visit',
+		path: '/pages/visit/index',
 		value: '拜访',
 		type: -1
 	},

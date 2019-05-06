@@ -153,11 +153,11 @@ class Launch extends Component {
 						<View className="sk-cube sk-cube9" />
 					</View>
 					<Text className="launch-loading_text">加载中{loading}</Text>
-					<Image
+					{/* <Image
 						className="launch-loading_wave"
 						mode="scaleToFill"
 						src={require('../../asset/img/wave.gif')}
-					/>
+					/> */}
 				</View>
 				<View className="launch-desc">
 					<Text className="title">宿舍管理</Text>

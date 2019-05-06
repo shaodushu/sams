@@ -5,19 +5,9 @@ const tools = require('../../libs/tool')
 const commands = require('../../commands')
 
 const single = async (req, res, next) => {
-    let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params), { id } = param, {
-        sessionStore,
-        headers
-    } = req,
-        userinfo = {};
-    //找到对应的用户信息
-    try {
-        userinfo = await operation.asyncHandleGetSession(sessionStore, headers.cookie)
-        userinfo = JSON.parse(userinfo)
-    } catch (error) {
-        res.status(403).send({ msg: '访问权限失效' })
-        return;
-    }
+    let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params), {
+        userinfo
+    } = req;
     try {
         //找到对应学生
         let student = (await operation.asyncHandleDbArgs(commands.student.singleByUid, [userinfo.id]))[0]

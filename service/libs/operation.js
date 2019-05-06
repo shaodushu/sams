@@ -68,10 +68,21 @@ const asyncHandleGetSession = (store, key) => {
 const asyncHandleSetSession = (store, key, data) => {
     return new Promise((resolve, reject) => {
         store.set(key, data, (error) => {
-            //TODO abnormal
             if (error) {
-                resolve(result);
-            } else reject(error);
+                reject(error);
+            } else resolve();
+        })
+    })
+}
+
+const asyncHandleDelSession = (store, key) => {
+    return new Promise((resolve, reject) => {
+        store.destroy(key, (error) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve()
+            }
         })
     })
 }
@@ -81,5 +92,6 @@ module.exports = {
     asyncHandleDb,
     asyncHandleDbExecTrans,
     asyncHandleGetSession,
-    asyncHandleSetSession
+    asyncHandleSetSession,
+    asyncHandleDelSession
 }

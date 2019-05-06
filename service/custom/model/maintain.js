@@ -6,18 +6,10 @@ const commands = require('../../commands')
 const create = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params), {
-            sessionStore,
-            headers
-        } = req, userinfo = {};
+            userinfo
+        } = req;
         //TODO 先获取用户信息
-        try {
-            userinfo = await operation.asyncHandleGetSession(sessionStore, headers.cookie)
-            userinfo = JSON.parse(userinfo)
-            param.uid = userinfo.id
-        } catch (error) {
-            res.status(403).send({ msg: '访问权限失效'})
-            return;
-        }
+        param.uid = userinfo.id
         //TODO 任务分配
         //1.找出(repair)无任务(s=0)的维修人员ID
         let standbyRepair = await operation.asyncHandleDbArgs(commands.repair.standbyRepair, [0])
@@ -56,36 +48,31 @@ const create = async (req, res, next) => {
 const list = async (req, res, next) => {
     try {
         let param = tools.judgeObj(req.body) || tools.judgeObj(req.query) || tools.judgeObj(req.params), { role } = param, {
-            sessionStore,
-            headers
-        } = req, userinfo = {}, uid = null, rid = null;
-        //TODO 先获取用户信息
-        try {
-            userinfo = await operation.asyncHandleGetSession(sessionStore, headers.cookie)
-            userinfo = JSON.parse(userinfo)
-        } catch (error) {
-            res.status(403).send({ msg: '访问权限失效'})
-            return;
-        }
+            userinfo
+        } = req, userId = null, repairId = null;
         //TODO 判断角色是维修人员or学生
         if (role === 2) {
-            uid = userinfo.id
+            userId = userinfo.id
         } else if (role === 3) {
-            try {
-                const result = await operation.asyncHandleDbArgs(commands.repair.getRepairByUid, [userinfo.id])
-                if (result.length === 1) {
-                    rid = result[0].id
-                } else {
-                    res.status(500).send({ msg: '服务器异常' })
-                    return;
-                }
-            } catch (error) {
-                next(createError(error))
+            const result = await operation.asyncHandleDbArgs(commands.repair.getRepairByUid, [userinfo.id])
+            if (result.length === 1) {
+                repairId = result[0].id
+            } else {
+                res.status(500).send({ msg: '服务器异常' })
                 return;
             }
         }
-        let total = await operation.asyncHandleDbArgs(commands.maintain.totalById, [uid, rid])
-        let list = await operation.asyncHandleDbArgs(commands.maintain.listById, [uid, rid, (param.page - 1) * param.size, param.page * param.size])
+        let total = await operation.asyncHandleDbArgs(commands.maintain.totalById, [userId, repairId])
+        let list = await operation.asyncHandleDbArgs(commands.maintain.listById, [userId, repairId, (param.page - 1) * param.size, param.page * param.size])
+        for (let i = 0; i < list.length; i++) {
+            let { aid, rid } = list[i]
+            if (aid) {
+                list[i].apartment = (await operation.asyncHandleDbArgs(commands.apartment.single, [aid]))[0]
+            }
+            if (rid) {
+                list[i].repair = (await operation.asyncHandleDbArgs(commands.repair.single, [rid]))[0]
+            }
+        }
         res.send(200, {
             list,
             total: total[0]['COUNT(id)'],

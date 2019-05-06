@@ -45,6 +45,23 @@ app.use(express.urlencoded({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+const operation = require('./libs/operation')
+
+//catch 403 and forward to error handler
+app.use(async (req, res, next) => {
+  if (req.path.indexOf('/custom/') > -1 && req.path !== '/custom/user/login') {
+    try {
+      let session = await operation.asyncHandleGetSession(sessionStore, req.headers.cookie)
+      userinfo = JSON.parse(session)
+      req.userinfo = userinfo
+      next()
+    } catch (error) {
+      res.status(403).send({ msg: '访问权限失效' })
+    }
+  } else {
+    next()
+  }
+});
 
 let Admin = [
   require('./admin/routers/login'),
@@ -65,26 +82,15 @@ let Custom = [
   require('./custom/routers/visitors'),
   require('./custom/routers/maintain'),
   require('./custom/routers/files'),
-  require('./custom/routers/apartment')
+  require('./custom/routers/apartment'),
+  require('./custom/routers/article')
 ]
 app.use('/admin', [...Admin]);
 app.use('/custom', [...Custom]);
 
 app.use(cookieParser());
 
-//catch 403 and forward to error handler
-// app.use(function (req, res, next) {
-//   if (['/custom/user/login', '/admin/user/login'].indexOf(req.path) > -1) {
-//     next()
-//   } else {
-//     try {
-//       let session =  operation.asyncHandleGetSession(sessionStore, headers.cookie)
-//       userinfo = JSON.parse(session)
-//     } catch (error) {
-//       res.status(403).send({ msg: '访问权限失效'})
-//     }
-//   }
-// });
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

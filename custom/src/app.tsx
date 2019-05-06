@@ -28,15 +28,8 @@ class App extends Component {
 		pages: [
 			'pages/main/launch',
 			'pages/main/index',
-			'pages/main/visit',
-			'pages/mine/index',
-			'pages/mine/bound',
-			'pages/mine/water',
-			'pages/mine/electricity',
-			'pages/mine/apartment',
-			'pages/maintain/index',
-			'pages/maintain/maintain',
 			'pages/message/index',
+			'pages/message/detail',
 		],
 		window: {
 			backgroundColor: '#eeeeee',
@@ -64,6 +57,16 @@ class App extends Component {
 				}
 			]
 		},
+		subPackages: [{
+			root: 'pages/visit/',
+			pages: ['index']
+		}, {
+			root: 'pages/mine/',
+			pages: ['index', 'bound', 'water', 'electricity', 'apartment', 'report']
+		}, {
+			root: 'pages/maintain/',
+			pages: ['index', 'manage', 'maintain']
+		}]
 	};
 
 	componentDidMount() { }

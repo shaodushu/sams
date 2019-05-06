@@ -4,7 +4,7 @@ import { API_MAINTAIN_CREATE, API_MAINTAIN_UPDATE, API_MAINTAIN_LIST } from '../
 import { createApiAction, createAction } from '../libs/redux';
 
 /**
- * 获取维修类别
+ * 获取维修列表
  * @param role 用户角色
  */
 export const dispatchMaintainList = (role) => createApiAction(MAINTAIN_LIST, API_MAINTAIN_LIST, 'post', {

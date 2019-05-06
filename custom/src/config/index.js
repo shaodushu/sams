@@ -1,6 +1,6 @@
 // 服务器地址
 const DEV_URL = 'http://127.0.0.1:3000'
-const ALPHA_URL = ''
+const ALPHA_URL = 'http://192.168.0.26:3000'
 const PRO_URL = ''
 
 let BASE_URL

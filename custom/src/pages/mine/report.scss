@@ -1,17 +1,5 @@
-.visit {
+.report {
     height: 100%;
-
-    .qrCode {
-        display: flex;
-        align-items: center;
-        height: 100%;
-
-        image {
-            height: 300px;
-            width: 300px;
-            margin: 0 auto;
-        }
-    }
 
     .page-section {
         display: flex;
@@ -22,7 +10,7 @@
         color: #333;
         background-color: #FFF;
         margin-left: 32px;
-        margin-right: 32px;
+        padding-right: 32px;
         margin-bottom: 1PX;
         position: relative;
         font-size: 32px;
@@ -30,8 +18,7 @@
     }
 
     &_btn {
-        // margin: 20px auto;
-        // width: 80%;
-        padding: 50px;
+        margin: 20px auto;
+        width: 80%;
     }
 }

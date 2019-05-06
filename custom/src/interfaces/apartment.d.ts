@@ -5,10 +5,10 @@ export default interface IApartment {
     aid?: Number | null;
     admin?: IAdmin;
     id?: Number | null;
-    floor: Number;
-    roomNum: Number;
-    rule: String;
-    notice: String;
+    floor?: Number;
+    roomNum?: Number;
+    rule?: String;
+    notice?: String;
     type: Number;
     createDate?: Date;
     updateDate?: Date;

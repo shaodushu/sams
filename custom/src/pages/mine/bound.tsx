@@ -1,8 +1,3 @@
-/** 
- * 解除用户关联，可能查询信息异常。其他表也做和用户绑定的操作
- * 
- * 
-*/
 import Taro, { Component, Config } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
