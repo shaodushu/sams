@@ -1,6 +1,20 @@
 const cheerio = require('cheerio')
 
 /**
+ * 
+ * @param {*} body 
+ */
+const newsParams = function (body) {
+    let $ = cheerio.load(body);
+    let page = $('#labCurrentPage').text(), totalPage = $('#labCountOfPage').text(), totalSize = $('#labCount').text();
+    return {
+        curPage: parseInt(page),
+        pageSize: Math.ceil(parseInt(totalSize) / parseInt(totalPage)),
+        totalSize: parseInt(totalSize)
+    }
+}
+
+/**
  * 新闻列表
  * @param {*} body 
  */
@@ -76,5 +90,6 @@ const Trim = function (str, is_global) {
 module.exports = {
     newsList,
     newsDetail,
-    newsContent
+    newsContent,
+    newsParams
 }

@@ -1,18 +1,20 @@
 import Taro, { Component, Config } from '@tarojs/taro';
-import { View, Block } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import {
-    AtCard,
-    AtActivityIndicator
+    AtCard
 } from 'taro-ui';
 import { API_ARTICLE_LIST } from '../../constants/api'
 import fly from '../../libs/api.request'
 import './index.scss';
 import * as Util from '../../libs/util'
 import IArticle from '../../interfaces/article'
+import { Empty, LoadMore } from '../../component'
+import { REFRESH_STATUS } from '../../constants/status'
 
 interface IState {
-    loading: Boolean;
-    list: Array<IArticle>
+    page: Number;
+    refresh_status: Number;
+    list: Array<IArticle>;
 }
 export default class Index extends Component<{}, IState> {
     config: Config = {
@@ -20,36 +22,59 @@ export default class Index extends Component<{}, IState> {
         navigationBarTitleText: '信息公告'
     }
     state = {
-        loading: true,
+        page: 1,
+        refresh_status: REFRESH_STATUS.NORMAL,
         list: []
     }
-    async onPullDownRefresh() {
-        try {
-            await this.getArticle()
-            Taro.stopPullDownRefresh()
-        } catch (error) {
-            Taro.stopPullDownRefresh()
+    onPullDownRefresh() {
+        this.setState({
+            page: 1
+        }, () => {
+            this.getArticleList()
+        })
+    }
+    onReachBottom() {
+        const { page, refresh_status } = this.state
+        if (refresh_status !== REFRESH_STATUS.NO_MORE_DATA) {
+            this.setState({
+                page: page + 1
+            }, () => {
+                this.getArticleList()
+            })
         }
     }
     componentDidMount() {
-        this.getArticle()
+        Util.showLoading('loading...')
+        this.getArticleList()
     }
-    async getArticle() {
+    async getArticleList() {
         try {
-            this.setState({
-                loading: true
+            const { page, list } = this.state;
+            if (page !== 1) {
+                this.setState({
+                    refresh_status: REFRESH_STATUS.REFRESHING
+                })
+            }
+            const result = await fly(API_ARTICLE_LIST, 'post', {
+                page
             })
-            const list = await fly(API_ARTICLE_LIST, 'post', {
-                page: 2
-            })
-            this.setState({
-                list,
-                loading: false
-            })
+            let status = result.list.length < 12 ? REFRESH_STATUS.NO_MORE_DATA : REFRESH_STATUS.NORMAL
+            if (page === 1) {
+                this.setState({
+                    list: result.list,
+                    refresh_status: status
+                })
+            } else {
+                this.setState({
+                    list: list.concat(result.list),
+                    refresh_status: status
+                })
+            }
+            Util.hideLoading()
+            Taro.stopPullDownRefresh()
         } catch (error) {
-            this.setState({
-                loading: false
-            })
+            Util.hideLoading()
+            Taro.stopPullDownRefresh()
         }
     }
     toNewsDetail(item) {
@@ -57,23 +82,23 @@ export default class Index extends Component<{}, IState> {
         Util.jumpUrl('/pages/message/detail')
     }
     render() {
-        const { loading, list } = this.state;
+        const { list, refresh_status } = this.state;
+        const newsList = list.map((item: IArticle, index) => {
+            return <AtCard
+                className="card shadow"
+                key={index}
+                note={`来源：${item.source}`}
+                extra={item.date}
+                title={item.title}
+                onClick={this.toNewsDetail.bind(this, item)}
+                isFull
+            >
+                <View className="card-content">{item.text}</View>
+            </AtCard>
+        })
         return <View className="message">
-            {loading && <AtActivityIndicator mode='center'></AtActivityIndicator>}
-            {!loading && <Block>
-                {list.map((item: IArticle, index) => <AtCard
-                    className="card shadow"
-                    key={index}
-                    note={`来源：${item.source}`}
-                    extra={item.date}
-                    title={item.title}
-                    onClick={this.toNewsDetail.bind(this, item)}
-                    isFull
-                >
-                    <View className="card-content">{item.text}</View>
-                </AtCard>)}
-            </Block>}
-
+            {list.length > 0 ? newsList : <Empty />}
+            <LoadMore status={refresh_status} />
         </View>
     }
 }

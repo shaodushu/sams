@@ -7,6 +7,7 @@ import fly from './api.request'
 export function createApiAction(type, url, method = 'GET', data = {}, extra = {}) {
   return async (dispatch) => {
     try {
+      dispatch({ type: `${type}_REQUEST`, data });
       const payload = await fly(url, method, data)
       dispatch({
         type,
@@ -16,6 +17,7 @@ export function createApiAction(type, url, method = 'GET', data = {}, extra = {}
       })
       return payload
     } catch (error) {
+      dispatch({ type: `${type}_FAILURE`, data, payload: error })
       throw (error)
     }
   }

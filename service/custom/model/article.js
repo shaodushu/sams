@@ -11,9 +11,11 @@ const newsList = async (req, res, next) => {
 
 
         //TODO 获取分页的文章列表
+        //@id 1.综合新闻;2.信息公告;3.热点关注;4.学术动态;5.工作交流;
         const result = await fly({
-            url: config.cuit.url + 'NewsList?id=' + page
+            url: config.cuit.url + 'NewsList?id=2'
         })
+        const { curPage, pageSize, totalSize } = util.newsParams(result)
         const list = util.newsList(result);
         for (let i = 0; i < list.length; i++) {
             let detail = await fly({
@@ -25,7 +27,7 @@ const newsList = async (req, res, next) => {
             })
             let { html, text } = util.newsContent(htmlDetail)
             if (htmlDetail.indexOf('<img') > -1) {
-                html=html.replace(
+                html = html.replace(
                     /<img.+?src="/g,
                     `<img style='object-fit: scale-down;height: 100%;width: 100%;margin:0 auto;' src="${config.cuit.url}`
                 )
@@ -34,7 +36,12 @@ const newsList = async (req, res, next) => {
             list[i] = Object.assign({}, { title, author, html, text, source, audit, date, hits })
         }
         //TODO 获取分页的文章详情
-        res.status(200).send(list)
+        res.status(200).send({
+            page: curPage,
+            pageSize,
+            totalSize,
+            list
+        })
     } catch (error) {
         res.status(500).send({ msg: error.message })
     }
