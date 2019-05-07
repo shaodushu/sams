@@ -15,5 +15,6 @@ export const HTTP_STATUS = {
 export const REFRESH_STATUS = {
   NORMAL: 0,
   REFRESHING: 1,
-  NO_MORE_DATA: 2
+  NO_MORE_DATA: 2,
+  ERROR: -1
 }

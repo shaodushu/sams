@@ -62,7 +62,7 @@ export default class Index extends Component<{}, IState> {
             if (page === 1) {
                 this.setState({
                     list: result.list,
-                    refresh_status: status
+                    refresh_status: REFRESH_STATUS.NORMAL
                 })
             } else {
                 this.setState({
@@ -73,6 +73,9 @@ export default class Index extends Component<{}, IState> {
             Util.hideLoading()
             Taro.stopPullDownRefresh()
         } catch (error) {
+            this.setState({
+                refresh_status: REFRESH_STATUS.ERROR
+            })
             Util.hideLoading()
             Taro.stopPullDownRefresh()
         }

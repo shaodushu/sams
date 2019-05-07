@@ -40,7 +40,7 @@ const newsList = async (req, res, next) => {
             page: curPage,
             pageSize,
             totalSize,
-            list
+            list: page >= 2 ? [] : list
         })
     } catch (error) {
         res.status(500).send({ msg: error.message })

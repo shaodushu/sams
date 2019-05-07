@@ -34,6 +34,9 @@ export default class LoadMore extends Component<IProps, IState> {
             case REFRESH_STATUS.NO_MORE_DATA: {
                 view = <View className='no-more-data'>-- No More Data --</View>
             }
+            case REFRESH_STATUS.ERROR: {
+                view = <View className='no-more-data'>-- ERROR --</View>
+            }
         }
         return (
             <View className='content'>
