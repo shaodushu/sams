@@ -62,7 +62,7 @@ export default class Index extends Component<{}, IState> {
             {loading && <AtActivityIndicator mode='center'></AtActivityIndicator>}
             {!loading && <Block>
                 {list.map((item: IArticle, index) => <AtCard
-                    className="card"
+                    className="card shadow"
                     key={index}
                     note={`来源：${item.source}`}
                     extra={item.date}

@@ -11,7 +11,7 @@ class Card extends Component<IProps, {}> {
     render() {
         const { customStyle, title } = this.props
         return (
-            <View className='card' style={customStyle}>
+            <View className='card shadow' style={customStyle}>
                 {title && <View className="title">{title}</View>}
 
                 <View className="content">

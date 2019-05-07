@@ -271,7 +271,34 @@ export default [{
   }
   ]
 },
-
+{
+  path: '/visitor',
+  name: 'visitor',
+  component: Main,
+  meta: {
+    hideInBread: true
+  },
+  children: [{
+    path: 'index',
+    name: '访客管理',
+    meta: {
+      icon: 'md-eye',
+      title: '访客管理'
+    },
+    component: () => import('@/view/visitor/index.vue')
+  },
+    // {
+    //   path: 'detail/:id',
+    //   name: '用电详情',
+    //   meta: {
+    //     icon: 'md-planet',
+    //     title: '用电详情',
+    //     hideInMenu: true
+    //   },
+    //   component: () => import('@/view/visitor/detail.vue')
+    // }
+  ]
+},
 {
   path: '/message',
   name: 'message',
