@@ -35,7 +35,7 @@ export default class LoadMore extends Component<IProps, IState> {
                 view = <View className='no-more-data'>-- No More Data --</View>
             }
             case REFRESH_STATUS.ERROR: {
-                view = <View className='no-more-data'>-- ERROR --</View>
+                view = <View className='no-more-data'>-- 与服务器失去同步~ --</View>
             }
         }
         return (

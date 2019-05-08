@@ -1,7 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { View, Block } from '@tarojs/components';
 import {
-    AtCard
+    AtCard,
+    AtActivityIndicator
 } from 'taro-ui';
 import { API_ARTICLE_LIST } from '../../constants/api'
 import fly from '../../libs/api.request'
@@ -15,6 +16,7 @@ interface IState {
     page: Number;
     refresh_status: Number;
     list: Array<IArticle>;
+    loading: Boolean;
 }
 export default class Index extends Component<{}, IState> {
     config: Config = {
@@ -24,7 +26,8 @@ export default class Index extends Component<{}, IState> {
     state = {
         page: 1,
         refresh_status: REFRESH_STATUS.NORMAL,
-        list: []
+        list: [],
+        loading: true
     }
     onPullDownRefresh() {
         this.setState({
@@ -43,9 +46,12 @@ export default class Index extends Component<{}, IState> {
             })
         }
     }
-    componentDidMount() {
-        Util.showLoading('loading...')
-        this.getArticleList()
+    async componentDidMount() {
+        await this.getArticleList()
+        this.setState({
+            loading: false
+        })
+
     }
     async getArticleList() {
         try {
@@ -85,7 +91,7 @@ export default class Index extends Component<{}, IState> {
         Util.jumpUrl('/pages/message/detail')
     }
     render() {
-        const { list, refresh_status } = this.state;
+        const { list, refresh_status, loading } = this.state;
         const newsList = list.map((item: IArticle, index) => {
             return <AtCard
                 className="card shadow"
@@ -100,8 +106,11 @@ export default class Index extends Component<{}, IState> {
             </AtCard>
         })
         return <View className="message">
-            {list.length > 0 ? newsList : <Empty />}
-            <LoadMore status={refresh_status} />
+            {!loading && <Block>
+                {list.length > 0 ? newsList : <Empty content="最近没有新的公告~" />}
+                <LoadMore status={refresh_status} />
+            </Block>}
+            {loading && <AtActivityIndicator mode="center" />}
         </View>
     }
 }
