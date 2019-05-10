@@ -52,9 +52,9 @@ const login = async (req, res, next) => {
             }
         })
         res.cookie('token', skey);
-        res.send(200, result[0])
+        res.status(200).send(result[0])
     } catch (err) {
-        next(createError(err))
+        res.status(500).send({ msg: err.message })
     }
 }
 /**

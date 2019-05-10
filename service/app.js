@@ -13,7 +13,7 @@ const MySQLStore = require('express-mysql-session')(session);
 const config = require('./config')
 const sessionStore = new MySQLStore(config.mysql)
 app.use(session({
-  key: 'shaodushu', //自行设置密钥
+  key: 'ali', //自行设置密钥
   secret: '123456', //私钥
   cookie: {
     maxAge: 60000 //最大生命期
