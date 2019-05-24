@@ -1,6 +1,7 @@
 <template>
   <Card>
     <Form :model="formItem" :label-width="80">
+      <Divider orientation="left">基本信息</Divider>
       <FormItem label="姓名">
         <Input v-model="formItem.name" placeholder="姓名..."></Input>
       </FormItem>
@@ -20,47 +21,50 @@
       </FormItem>
       <FormItem>
         <Button type="primary" @click="handleClick">提交</Button>
-        <Button style="margin-left: 8px">取消</Button>
+        <Button style="margin-left: 8px" @click="handleClose">取消</Button>
       </FormItem>
     </Form>
   </Card>
 </template>
 <script>
-import * as repair_api from '@/api/repair';
-import PicList from '@/components/pic-list'
+import * as repair_api from "@/api/repair";
+import PicList from "@/components/pic-list";
 export default {
-  name: 'repair_create',
+  name: "repair_create",
   data() {
     return {
       actionUrl: "http://localhost:3000/admin/file/uploadImg",
       defaultList: [],
       formItem: {
-        name: '',
-        avatar: '',
-        tel: ''
+        name: "",
+        avatar: "",
+        tel: ""
       },
       extraData: {
-        type: 'repair'
+        type: "repair"
       }
-    }
+    };
   },
   components: {
     PicList
   },
   methods: {
+    handleClose() {
+      this.$router.push({ path: "/maintain/staff" });
+    },
     async handleClick() {
       try {
-        const result = await repair_api.create(this.formItem)
-        this.$Message.info(result.data.msg)
+        const result = await repair_api.create(this.formItem);
+        this.$Message.info(result.data.msg);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     handleSuccess(data) {
       if (data && data.length > 0) {
-        this.formItem.avatar = data[0].url
+        this.formItem.avatar = data[0].url;
       }
     }
   }
-}
+};
 </script>

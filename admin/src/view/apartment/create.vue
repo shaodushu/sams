@@ -1,6 +1,7 @@
 <template>
   <Card>
     <Form :model="formItem" :label-width="80">
+      <Divider orientation="left">基本信息</Divider>
       <FormItem label="公寓名">
         <Input v-model="formItem.name" placeholder="公寓名..."></Input>
       </FormItem>
@@ -34,7 +35,7 @@
       </FormItem>
       <FormItem>
         <Button type="primary" @click="handleClick">提交</Button>
-        <Button style="margin-left: 8px">取消</Button>
+        <Button style="margin-left: 8px" @click="handleClose">取消</Button>
       </FormItem>
     </Form>
   </Card>
@@ -56,6 +57,9 @@ export default {
     };
   },
   methods: {
+    handleClose() {
+      this.$router.push({ path: "/apartment/index" });
+    },
     async handleClick() {
       try {
         const result = await apartment_api.create(this.formItem);

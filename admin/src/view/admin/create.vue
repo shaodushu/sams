@@ -1,6 +1,7 @@
 <template>
   <Card>
     <Form :model="formItem" :label-width="80">
+      <Divider orientation="left">基本信息</Divider>
       <FormItem label="姓名">
         <Input v-model="formItem.name" placeholder="姓名..."></Input>
       </FormItem>
@@ -20,47 +21,50 @@
       </FormItem>
       <FormItem>
         <Button type="primary" @click="handleClick">提交</Button>
-        <Button style="margin-left: 8px">取消</Button>
+        <Button style="margin-left: 8px" @click="handleClose">取消</Button>
       </FormItem>
     </Form>
   </Card>
 </template>
 <script>
-import * as admin_api from '@/api/admin';
-import PicList from '@/components/pic-list'
+import * as admin_api from "@/api/admin";
+import PicList from "@/components/pic-list";
 export default {
-  name: 'admin_create',
+  name: "admin_create",
   data() {
     return {
       actionUrl: "http://localhost:3000/admin/file/uploadImg",
       defaultList: [],
       formItem: {
-        name: '',
-        avatar: '',
-        tel: ''
+        name: "",
+        avatar: "",
+        tel: ""
       },
       extraData: {
-        type: 'admin'
+        type: "admin"
       }
-    }
+    };
   },
   components: {
     PicList
   },
   methods: {
+    handleClose() {
+      this.$router.push({ path: "/admin/index" });
+    },
     async handleClick() {
       try {
-        const result = await admin_api.create(this.formItem)
-        this.$Message.info(result.data.msg)
+        const result = await admin_api.create(this.formItem);
+        this.$Message.info(result.data.msg);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     handleSuccess(data) {
       if (data && data.length > 0) {
-        this.formItem.avatar = data[0].url
+        this.formItem.avatar = data[0].url;
       }
     }
   }
-}
+};
 </script>

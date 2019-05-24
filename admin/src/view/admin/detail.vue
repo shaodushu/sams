@@ -1,6 +1,7 @@
 <template>
   <Card>
     <Form ref="form" :model="form" :label-width="95">
+      <Divider orientation="left">基本信息</Divider>
       <FormItem label="姓名">
         <AlterBox title="姓名" @on-cancel="handleCancel" @on-complate="handleUpdate">
           <template slot="notEdit">
@@ -37,6 +38,10 @@
           </template>
         </AlterBox>
       </FormItem>
+      <Divider orientation="left">操作</Divider>
+      <div style="text-align:right">
+        <Button @click="handleClose" type="info">返回</Button>
+      </div>
     </Form>
   </Card>
 </template>
@@ -65,6 +70,9 @@ export default {
     };
   },
   methods: {
+    handleClose() {
+      this.$router.push({ path: "/admin/index" });
+    },
     uploadSuccess(data) {
       if (data && data.length > 0) {
         this.form.avatar = data[0].url;
